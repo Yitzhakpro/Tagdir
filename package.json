@@ -1,0 +1,18 @@
+{
+  "name": "enhancer",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Yitzhakpro",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "bin": {
+    "enhancer": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.0",
+    "typescript": "^4.9.5"
+  }
+}
