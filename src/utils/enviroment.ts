@@ -1,0 +1,24 @@
+import fs from "fs";
+import { readNthLine } from "./files";
+import type { PackageManager } from "../types";
+
+export const getPackageManagerName = async (): Promise<PackageManager> => {
+  const yarnLockFilePath = "./yarn.lock";
+  const pnpmLockFilePath = "./pnpm-lock.yaml";
+  const isYarnLockExists = fs.existsSync(yarnLockFilePath);
+  const isPnpmLockExists = fs.existsSync(pnpmLockFilePath);
+
+  if (!isYarnLockExists && !isPnpmLockExists) {
+    return "npm";
+  } else if (isYarnLockExists) {
+    const versionLine = await readNthLine(yarnLockFilePath, 2);
+    if (versionLine.includes("yarn lockfile v1")) {
+      return "yarn1";
+    }
+    return "yarn2";
+  } else if (isPnpmLockExists) {
+    return "pnpm";
+  }
+
+  throw new Error("Could not find package manager in this project");
+};
