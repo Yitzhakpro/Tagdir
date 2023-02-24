@@ -1,4 +1,4 @@
 import Enhancer from "./Program";
 
 const enhancer = new Enhancer();
-enhancer.parse();
+enhancer.parse(process.argv);
