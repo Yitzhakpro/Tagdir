@@ -1,10 +1,11 @@
 import fs from "fs";
+import path from "path";
 import { readNthLine } from "./files";
 import type { PackageManager } from "../types";
 
 export const getPackageManagerName = async (): Promise<PackageManager> => {
-  const yarnLockFilePath = "./yarn.lock";
-  const pnpmLockFilePath = "./pnpm-lock.yaml";
+  const yarnLockFilePath = path.join(process.cwd(), "yarn.lock");
+  const pnpmLockFilePath = path.join(process.cwd(), "pnpm-lock.yaml");
   const isYarnLockExists = fs.existsSync(yarnLockFilePath);
   const isPnpmLockExists = fs.existsSync(pnpmLockFilePath);
 

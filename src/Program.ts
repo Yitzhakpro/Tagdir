@@ -13,7 +13,7 @@ export default class Enhancer {
     this.program = program;
   }
 
-  public parse(argv?: NodeJS.Process["argv"]) {
+  public parse(argv?: NodeJS.Process["argv"]): void {
     this.program.parse(argv);
   }
 }

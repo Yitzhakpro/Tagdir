@@ -23,7 +23,7 @@ class AddCommand {
     this.command = addCommand;
   }
 
-  private handler(configurations: Configuration[]) {
+  private handler(configurations: Configuration[]): void {
     configurations.forEach((configuration) => {
       console.log(configuration);
     });
