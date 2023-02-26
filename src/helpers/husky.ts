@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { getPackageManagerName, Prompt, runCommand } from "../utils";
 import type { InstallMapping } from "../types";
 
@@ -41,6 +43,18 @@ class Husky {
     }
   }
 
+  private static createLintStagedConfiguration(): void {
+    const basicLintStagedConfiguration = {
+      "*": "npm run test",
+    };
+    const destinationPath = path.join(process.cwd(), ".lintstagedrc");
+
+    fs.writeFileSync(
+      destinationPath,
+      JSON.stringify(basicLintStagedConfiguration, undefined, 4)
+    );
+  }
+
   public static async install(): Promise<void> {
     await this.installHusky();
 
@@ -51,6 +65,7 @@ class Husky {
 
     if (shouldInstallLintStaged) {
       await this.installLintStaged();
+      this.createLintStagedConfiguration();
     }
   }
 }
