@@ -1,9 +1,5 @@
-import { promisify } from "util";
-import { exec as execCallback } from "child_process";
-import { getPackageManagerName, Prompt } from "../utils";
+import { getPackageManagerName, Prompt, runCommand } from "../utils";
 import type { InstallMapping } from "../types";
-
-const exec = promisify(execCallback);
 
 class Husky {
   // TODO: think later about create project from scratch use case
@@ -19,12 +15,7 @@ class Husky {
         pnpm: "pnpm dlx husky-init && pnpm install",
       };
 
-      const { stderr, stdout } = await exec(
-        huskyInstallMapping[packageManager]
-      );
-
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
+      await runCommand(huskyInstallMapping[packageManager]);
     } catch (error) {
       console.error(`exec error: ${error}`);
       throw new Error("Failed to install husky");
@@ -43,12 +34,7 @@ class Husky {
         pnpm: "pnpm add -D lint-staged",
       };
 
-      const { stderr, stdout } = await exec(
-        lintStagedInstallMapping[packageManager]
-      );
-
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
+      await runCommand(lintStagedInstallMapping[packageManager]);
     } catch (error) {
       console.error(`exec error: ${error}`);
       throw new Error("Failed to install lint staged");
