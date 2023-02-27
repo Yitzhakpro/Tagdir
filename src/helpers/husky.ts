@@ -1,11 +1,14 @@
 import fs from "fs";
 import path from "path";
+import Logger from "../logger";
 import { getPackageManagerName, Prompt, runCommand } from "../utils";
 import type { InstallMapping } from "../types";
 
 class Husky {
   // TODO: think later about create project from scratch use case
   private static async installHusky(): Promise<void> {
+    Logger.info("Installing husky...");
+
     try {
       const packageManager = await getPackageManagerName();
 
@@ -18,13 +21,18 @@ class Husky {
       };
 
       await runCommand(huskyInstallMapping[packageManager]);
+      Logger.success("Installed husky successfully!");
     } catch (error) {
-      console.error(`exec error: ${error}`);
+      Logger.error("Failed to install husky");
+      console.error(error);
+      // TODO: figure out if we want to stop the process or not
       throw new Error("Failed to install husky");
     }
   }
 
   private static async installLintStaged(): Promise<void> {
+    Logger.info("Installing lint-staged...");
+
     try {
       const packageManager = await getPackageManagerName();
 
@@ -37,8 +45,11 @@ class Husky {
       };
 
       await runCommand(lintStagedInstallMapping[packageManager]);
+      Logger.success("Installed lint-staged successfully!");
     } catch (error) {
-      console.error(`exec error: ${error}`);
+      Logger.error("Failed to install lint-staged");
+      console.error(error);
+      // TODO: figure out if we want to stop the process or not
       throw new Error("Failed to install lint staged");
     }
   }
@@ -52,6 +63,12 @@ class Husky {
     fs.writeFileSync(
       destinationPath,
       JSON.stringify(basicLintStagedConfiguration, undefined, 4)
+    );
+
+    // ?: figure out if we want to change husky config file to use lint staged
+    Logger.success("Created default .lintstagedrc configuration file");
+    Logger.info(
+      "You can modify the config file according to your needs, for more info: https://www.npmjs.com/package/lint-staged"
     );
   }
 
