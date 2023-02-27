@@ -3,8 +3,8 @@ import path from "path";
 import { Logger } from "../utils";
 import {
   isPackageInstalled,
+  getConfirmation,
   getPackageManagerName,
-  Prompt,
   runCommand,
 } from "../utils";
 import type { InstallMapping } from "../types";
@@ -84,7 +84,7 @@ class Husky {
       Logger.warn("Husky is already installed, skipping.");
     }
 
-    const shouldInstallLintStaged = await Prompt.getConfirmation(
+    const shouldInstallLintStaged = await getConfirmation(
       "install",
       "Do you want to install lint-staged? (usually going along with husky)"
     );
