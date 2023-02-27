@@ -55,6 +55,7 @@ class Husky {
     );
   }
 
+  // TODO: add logs about what should they add, etc...
   public static async install(): Promise<void> {
     await this.installHusky();
 
