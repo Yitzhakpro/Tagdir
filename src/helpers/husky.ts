@@ -30,8 +30,7 @@ class Husky {
     } catch (error) {
       Logger.error("Failed to install husky");
       console.error(error);
-      // TODO: figure out if we want to stop the process or not
-      throw new Error("Failed to install husky");
+      process.exit(1);
     }
   }
 
@@ -54,8 +53,7 @@ class Husky {
     } catch (error) {
       Logger.error("Failed to install lint-staged");
       console.error(error);
-      // TODO: figure out if we want to stop the process or not
-      throw new Error("Failed to install lint staged");
+      process.exit(1);
     }
   }
 
@@ -70,8 +68,22 @@ class Husky {
       JSON.stringify(basicLintStagedConfiguration, undefined, 4)
     );
 
-    // TODO: figure out if we want to change husky config file to use lint staged
-    Logger.success("Created default .lintstagedrc configuration file");
+    // modifing .pre-commit husky file to npx lint-staged
+    const preCommitHuskyLocation = path.join(
+      process.cwd(),
+      ".husky",
+      "pre-commit"
+    );
+    const preCommitHusky = fs.readFileSync(preCommitHuskyLocation).toString();
+    const modifiedPreCommit = preCommitHusky.replace(
+      /npm.*/,
+      "npx lint-staged"
+    );
+    fs.writeFileSync(preCommitHuskyLocation, modifiedPreCommit);
+
+    Logger.success(
+      "Created default .lintstagedrc configuration file and changed default husky pre-commit file"
+    );
     Logger.info(
       "You can modify the config file according to your needs, for more info: https://www.npmjs.com/package/lint-staged"
     );
