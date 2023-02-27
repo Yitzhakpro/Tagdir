@@ -1,7 +1,12 @@
 import fs from "fs";
 import path from "path";
 import Logger from "../logger";
-import { getPackageManagerName, Prompt, runCommand } from "../utils";
+import {
+  isPackageInstalled,
+  getPackageManagerName,
+  Prompt,
+  runCommand,
+} from "../utils";
 import type { InstallMapping } from "../types";
 
 class Husky {
@@ -65,25 +70,32 @@ class Husky {
       JSON.stringify(basicLintStagedConfiguration, undefined, 4)
     );
 
-    // ?: figure out if we want to change husky config file to use lint staged
+    // TODO: figure out if we want to change husky config file to use lint staged
     Logger.success("Created default .lintstagedrc configuration file");
     Logger.info(
       "You can modify the config file according to your needs, for more info: https://www.npmjs.com/package/lint-staged"
     );
   }
 
-  // TODO: add logs about what should they add, etc...
   public static async install(): Promise<void> {
-    await this.installHusky();
+    if (!isPackageInstalled("husky")) {
+      await this.installHusky();
+    } else {
+      Logger.warn("Husky is already installed, skipping.");
+    }
 
     const shouldInstallLintStaged = await Prompt.getConfirmation(
       "install",
-      "Do you want to install lint staged? (usually going along with husky)"
+      "Do you want to install lint-staged? (usually going along with husky)"
     );
 
     if (shouldInstallLintStaged) {
-      await this.installLintStaged();
-      this.createLintStagedConfiguration();
+      if (!isPackageInstalled("lint-staged")) {
+        await this.installLintStaged();
+        this.createLintStagedConfiguration();
+      } else {
+        Logger.warn("Lint-staged is already installed, skipping.");
+      }
     }
   }
 }

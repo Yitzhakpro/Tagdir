@@ -23,3 +23,18 @@ export const getPackageManagerName = async (): Promise<PackageManager> => {
 
   throw new Error("Could not find package manager in this project");
 };
+
+export const isPackageInstalled = (packageName: string): boolean => {
+  const packageJsonLocation = path.join(process.cwd(), "package.json");
+  const packageJsonBuffer = fs.readFileSync(packageJsonLocation);
+  const packageJson = JSON.parse(packageJsonBuffer.toString());
+
+  if (
+    (packageJson.devDependencies && packageJson.devDependencies[packageName]) ||
+    (packageJson.dependencies && packageJson.dependencies[packageName])
+  ) {
+    return true;
+  }
+
+  return false;
+};
