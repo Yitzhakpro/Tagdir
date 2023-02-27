@@ -58,14 +58,12 @@ class Husky {
   }
 
   private static createLintStagedConfiguration(): void {
-    const basicLintStagedConfiguration = {
-      "*": "npm run test",
-    };
+    const basicLintStagedConfiguration = {};
     const destinationPath = path.join(process.cwd(), ".lintstagedrc");
 
     fs.writeFileSync(
       destinationPath,
-      JSON.stringify(basicLintStagedConfiguration, undefined, 4)
+      JSON.stringify(basicLintStagedConfiguration)
     );
 
     // modifing .pre-commit husky file to npx lint-staged
