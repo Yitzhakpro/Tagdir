@@ -42,20 +42,27 @@ class Husky {
   }
 
   private static async installLintStaged(): Promise<void> {
-    Logger.info("Installing lint-staged...");
-
     try {
       const packageManager = await getPackageManagerName();
 
-      // ?: maybe add question if you want to install for yourself
       const lintStagedInstallCommand = getInstallCommand(
         packageManager,
         "lint-staged",
         true
       );
-
-      await runCommand(lintStagedInstallCommand);
-      Logger.success("Installed lint-staged successfully!");
+      const shouldAutoInstall = await getConfirmation(
+        "auto-install-lint-staged",
+        "Do you want the CLI to install it for you?"
+      );
+      if (shouldAutoInstall) {
+        Logger.info("Installing lint-staged...");
+        await runCommand(lintStagedInstallCommand);
+        Logger.success("Installed lint-staged successfully!");
+      } else {
+        Logger.info(
+          `Here is the command for manual installation: ${lintStagedInstallCommand}`
+        );
+      }
     } catch (error) {
       Logger.error("Failed to install lint-staged");
       console.error(error);
@@ -102,7 +109,7 @@ class Husky {
 
     const shouldInstallLintStaged = await getConfirmation(
       "install",
-      "Do you want to install lint-staged? (usually going along with husky)"
+      "Do you want to add lint-staged? (usually going along with husky)"
     );
 
     if (shouldInstallLintStaged) {
