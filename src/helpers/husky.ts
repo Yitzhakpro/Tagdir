@@ -12,28 +12,33 @@ import {
 class Husky {
   // TODO: think later about create project from scratch use case
   private static async installHusky(): Promise<void> {
-    Logger.info("Installing husky...");
-
     try {
       const packageManager = await getPackageManagerName();
 
-      // ?: maybe add question if you want to install for yourself
+      Logger.info("Initializing husky...");
       const huskyPackageName =
         packageManager === "yarn2" ? "husky-init --yarn2" : "husky-init";
-      const huskyInstallCommand = getPackageRunnerCommand(
+      const huskyInitRunnerCommand = getPackageRunnerCommand(
         packageManager,
         huskyPackageName
       );
+      await runCommand(huskyInitRunnerCommand);
+      Logger.success("Initialized husky successfully!");
 
-      // const huskyInstallMapping: InstallMapping = {
-      //   npm: "npx husky-init && npm install",
-      //   yarn1: "npx husky-init && yarn",
-      //   yarn2: "yarn dlx husky-init --yarn2 && yarn",
-      //   pnpm: "pnpm dlx husky-init && pnpm install",
-      // };
-
-      await runCommand(huskyInstallCommand);
-      Logger.success("Installed husky successfully!");
+      const huskyInstallCommand = getInstallCommand(packageManager, "", false);
+      const shouldAutoInstall = await getConfirmation(
+        "auto-install-husky",
+        "Do you want the CLI to install it for you?"
+      );
+      if (shouldAutoInstall) {
+        Logger.info("Installing lint-staged...");
+        await runCommand(huskyInstallCommand);
+        Logger.success("Installed husky successfully!");
+      } else {
+        Logger.info(
+          `For manual installation just type: ${huskyInstallCommand}`
+        );
+      }
     } catch (error) {
       Logger.error("Failed to install husky");
       console.error(error);
