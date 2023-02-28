@@ -1,13 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { Logger } from "../utils";
+import { Logger, getInstallCommand } from "../utils";
 import {
   isPackageInstalled,
   getConfirmation,
   getPackageManagerName,
+  getPackageRunnerCommand,
   runCommand,
 } from "../utils";
-import type { InstallMapping } from "../types";
 
 class Husky {
   // TODO: think later about create project from scratch use case
@@ -18,14 +18,21 @@ class Husky {
       const packageManager = await getPackageManagerName();
 
       // ?: maybe add question if you want to install for yourself
-      const huskyInstallMapping: InstallMapping = {
-        npm: "npx husky-init && npm install",
-        yarn1: "npx husky-init && yarn",
-        yarn2: "yarn dlx husky-init --yarn2 && yarn",
-        pnpm: "pnpm dlx husky-init && pnpm install",
-      };
+      const huskyPackageName =
+        packageManager === "yarn2" ? "husky-init --yarn2" : "husky-init";
+      const huskyInstallCommand = getPackageRunnerCommand(
+        packageManager,
+        huskyPackageName
+      );
 
-      await runCommand(huskyInstallMapping[packageManager]);
+      // const huskyInstallMapping: InstallMapping = {
+      //   npm: "npx husky-init && npm install",
+      //   yarn1: "npx husky-init && yarn",
+      //   yarn2: "yarn dlx husky-init --yarn2 && yarn",
+      //   pnpm: "pnpm dlx husky-init && pnpm install",
+      // };
+
+      await runCommand(huskyInstallCommand);
       Logger.success("Installed husky successfully!");
     } catch (error) {
       Logger.error("Failed to install husky");
@@ -41,14 +48,13 @@ class Husky {
       const packageManager = await getPackageManagerName();
 
       // ?: maybe add question if you want to install for yourself
-      const lintStagedInstallMapping: InstallMapping = {
-        npm: "npm install --save-dev lint-staged",
-        yarn1: "yarn add -D lint-staged",
-        yarn2: "yarn add -D lint-staged",
-        pnpm: "pnpm add -D lint-staged",
-      };
+      const lintStagedInstallCommand = getInstallCommand(
+        packageManager,
+        "lint-staged",
+        true
+      );
 
-      await runCommand(lintStagedInstallMapping[packageManager]);
+      await runCommand(lintStagedInstallCommand);
       Logger.success("Installed lint-staged successfully!");
     } catch (error) {
       Logger.error("Failed to install lint-staged");

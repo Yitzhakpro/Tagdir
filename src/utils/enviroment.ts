@@ -38,3 +38,40 @@ export const isPackageInstalled = (packageName: string): boolean => {
 
   return false;
 };
+
+export const getPackageRunnerCommand = (
+  packageManager: PackageManager,
+  packageName: string
+): string => {
+  if (packageManager === "npm" || packageManager === "yarn1") {
+    return `npx ${packageName}`;
+  } else if (packageManager === "yarn2") {
+    return `yarn dlx ${packageName}`;
+  } else {
+    return `pnpm dlx ${packageName}`;
+  }
+};
+
+export const getInstallCommand = (
+  packageManager: PackageManager,
+  packageName: string,
+  isDevDep: boolean
+): string => {
+  let command = "";
+
+  if (packageManager === "npm") {
+    command += "npm i ";
+  } else if (packageManager === "yarn1" || packageManager === "yarn2") {
+    command += "yarn add ";
+  } else {
+    command += "pnpm add ";
+  }
+
+  if (isDevDep) {
+    command += "-D ";
+  }
+
+  command += packageName;
+
+  return command;
+};
