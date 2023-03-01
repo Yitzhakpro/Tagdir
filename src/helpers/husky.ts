@@ -4,17 +4,16 @@ import { Logger, getInstallCommand } from "../utils";
 import {
   isPackageInstalled,
   getConfirmation,
-  getPackageManagerName,
   getPackageRunnerCommand,
   runCommand,
 } from "../utils";
+import type { PackageManager } from "../types";
 
 class Husky {
-  // TODO: think later about create project from scratch use case
-  private static async installHusky(): Promise<void> {
+  private static async installHusky(
+    packageManager: PackageManager
+  ): Promise<void> {
     try {
-      const packageManager = await getPackageManagerName();
-
       Logger.info("Initializing husky...");
       const huskyPackageName =
         packageManager === "yarn2" ? "husky-init --yarn2" : "husky-init";
@@ -46,10 +45,10 @@ class Husky {
     }
   }
 
-  private static async installLintStaged(): Promise<void> {
+  private static async installLintStaged(
+    packageManager: PackageManager
+  ): Promise<void> {
     try {
-      const packageManager = await getPackageManagerName();
-
       const lintStagedInstallCommand = getInstallCommand(
         packageManager,
         "lint-staged",
@@ -105,9 +104,9 @@ class Husky {
     );
   }
 
-  public static async install(): Promise<void> {
+  public static async install(packageManager: PackageManager): Promise<void> {
     if (!isPackageInstalled("husky")) {
-      await this.installHusky();
+      await this.installHusky(packageManager);
     } else {
       Logger.warn("Husky is already installed, skipping.");
     }
@@ -119,7 +118,7 @@ class Husky {
 
     if (shouldInstallLintStaged) {
       if (!isPackageInstalled("lint-staged")) {
-        await this.installLintStaged();
+        await this.installLintStaged(packageManager);
         this.createLintStagedConfiguration();
       } else {
         Logger.warn("Lint-staged is already installed, skipping.");
