@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Logger, getInstallCommand } from "../utils";
+import { Logger, getInstallCommand, getInstallAllDepsCommand } from "../utils";
 import {
   isPackageInstalled,
   getConfirmation,
@@ -24,7 +24,7 @@ class Husky {
       await runCommand(huskyInitRunnerCommand);
       Logger.success("Initialized husky successfully!");
 
-      const huskyInstallCommand = getInstallCommand(packageManager, "", false);
+      const huskyInstallCommand = getInstallAllDepsCommand(packageManager);
       const shouldAutoInstall = await getConfirmation(
         "auto-install-husky",
         "Do you want the CLI to install it for you?"

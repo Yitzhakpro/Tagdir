@@ -1,4 +1,6 @@
 import { Command, Argument } from "commander";
+import { Husky } from "../../helpers";
+import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
 import type { Configuration } from "./types";
 
@@ -23,9 +25,13 @@ class AddCommand {
     this.command = addCommand;
   }
 
-  private handler(configurations: Configuration[]): void {
-    configurations.forEach((configuration) => {
-      console.log(configuration);
+  private async handler(configurations: Configuration[]): Promise<void> {
+    const packageManager = await getPackageManagerName();
+
+    configurations.forEach(async (configuration) => {
+      if (configuration === "husky") {
+        await Husky.install(packageManager);
+      }
     });
   }
 }

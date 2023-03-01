@@ -75,3 +75,15 @@ export const getInstallCommand = (
 
   return command;
 };
+
+export const getInstallAllDepsCommand = (
+  packageManager: PackageManager
+): string => {
+  if (packageManager === "npm") {
+    return "npm i";
+  } else if (packageManager === "yarn1" || packageManager === "yarn2") {
+    return "yarn";
+  } else {
+    return "pnpm i";
+  }
+};
