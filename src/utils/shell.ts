@@ -17,7 +17,7 @@ export const runCommand = async (
   process.stderr.on("data", (data: any) => {
     if (verbose) {
       const formatedText = removeEndNewLine(data.toString());
-      console.log(formatedText);
+      console.error(formatedText);
     }
   });
 
