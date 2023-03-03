@@ -40,13 +40,17 @@ class Prettier {
   }
 
   private static createPrettierConfiguration(): void {
-    const basicPrettierConfiguration = {};
+    const prettierrcTemplateLocation = path.join(
+      __dirname,
+      "..",
+      "..",
+      "templates",
+      "prettier",
+      ".prettierrc"
+    );
     const destinationPath = path.join(process.cwd(), ".prettierrc");
 
-    fs.writeFileSync(
-      destinationPath,
-      JSON.stringify(basicPrettierConfiguration, undefined, 4)
-    );
+    fs.copyFileSync(prettierrcTemplateLocation, destinationPath);
 
     Logger.success("Created default .prettierrc configuration file.");
     Logger.info(
@@ -54,13 +58,30 @@ class Prettier {
     );
   }
 
-    private static createPrettierIgnoreConfiguration(): void {
-        
-    }
+  private static createPrettierIgnoreConfiguration(): void {
+    const prettierrcIgnoreTemplateLocation = path.join(
+      __dirname,
+      "..",
+      "..",
+      "templates",
+      "prettier",
+      ".prettierignore"
+    );
+    const destinationPath = path.join(process.cwd(), ".prettierignore");
+
+    fs.copyFileSync(prettierrcIgnoreTemplateLocation, destinationPath);
+
+    Logger.success("Created default .prettierignore configuration file.");
+    Logger.info(
+      "You can modify the ignore file according to your needs, for more info: https://prettier.io/docs/en/ignore.html"
+    );
+  }
 
   public static async install(packageManager: PackageManager): Promise<void> {
     if (!isPackageInstalled("prettier")) {
       await this.installPrettier(packageManager);
+      this.createPrettierConfiguration();
+      this.createPrettierIgnoreConfiguration();
     } else {
       Logger.warn("Prettier is already installed, skipping.");
     }
