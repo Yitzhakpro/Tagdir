@@ -1,5 +1,5 @@
 import { Command, Argument } from "commander";
-import { Husky } from "../../helpers";
+import { Husky, Prettier } from "../../helpers";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
 import type { Configuration } from "./types";
@@ -31,6 +31,8 @@ class AddCommand {
     configurations.forEach(async (configuration) => {
       if (configuration === "husky") {
         await Husky.install(packageManager);
+      } else if (configuration === "prettier") {
+        await Prettier.install(packageManager);
       }
     });
   }

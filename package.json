@@ -6,8 +6,12 @@
   "license": "MIT",
   "main": "dist/index.js",
   "bin": {
-    "enhancer": "./dist/index.js"
+    "yproject-enhancer": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "templates"
+  ],
   "scripts": {
     "build": "rimraf ./dist && npx tsc"
   },

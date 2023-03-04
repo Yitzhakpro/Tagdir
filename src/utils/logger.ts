@@ -24,7 +24,7 @@ export const warn = (message: string) => {
   )}`;
   const formattedString = chalk.bold(message);
 
-  console.log(`${warnPrefix} ${formattedString}`);
+  console.warn(`${warnPrefix} ${formattedString}`);
 };
 
 export const error = (message: string) => {
@@ -33,5 +33,5 @@ export const error = (message: string) => {
   )}`;
   const formattedString = chalk.bold(message);
 
-  console.log(`${errorPrefix} ${formattedString}`);
+  console.error(`${errorPrefix} ${formattedString}`);
 };
