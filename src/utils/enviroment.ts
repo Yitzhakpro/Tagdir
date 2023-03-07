@@ -24,10 +24,25 @@ export const getPackageManagerName = async (): Promise<PackageManager> => {
   throw new Error("Could not find package manager in this project");
 };
 
-export const isPackageInstalled = (packageName: string): boolean => {
-  const packageJsonLocation = path.join(process.cwd(), "package.json");
+export const getPackageJsonPath = (basePath?: string): string => {
+  const packageJsonLocation = path.join(
+    basePath || process.cwd(),
+    "package.json"
+  );
+
+  return packageJsonLocation;
+};
+
+const getPackageJson = (location?: string): Record<string, any> => {
+  const packageJsonLocation = location || getPackageJsonPath();
   const packageJsonBuffer = fs.readFileSync(packageJsonLocation);
   const packageJson = JSON.parse(packageJsonBuffer.toString());
+
+  return packageJson;
+};
+
+export const isPackageInstalled = (packageName: string): boolean => {
+  const packageJson = getPackageJson();
 
   if (
     (packageJson.devDependencies && packageJson.devDependencies[packageName]) ||
@@ -37,6 +52,22 @@ export const isPackageInstalled = (packageName: string): boolean => {
   }
 
   return false;
+};
+
+export const addScriptToPackageJson = (name: string, script: string): void => {
+  const packageJsonLocation = getPackageJsonPath();
+  const packageJson = getPackageJson(packageJsonLocation);
+
+  if (!packageJson.scripts) {
+    packageJson.scripts = {};
+  }
+
+  packageJson.scripts[name] = script;
+
+  fs.writeFileSync(
+    packageJsonLocation,
+    JSON.stringify(packageJson, undefined, 2)
+  );
 };
 
 export const getPackageRunnerCommand = (

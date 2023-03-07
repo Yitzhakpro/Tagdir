@@ -1,6 +1,11 @@
 import fs from "fs";
 import path from "path";
-import { isPackageInstalled, Logger, runCommand } from "../utils";
+import {
+  addScriptToPackageJson,
+  isPackageInstalled,
+  Logger,
+  runCommand,
+} from "../utils";
 
 class Eslint {
   private static async initEslint(): Promise<void> {
@@ -40,10 +45,21 @@ class Eslint {
     );
   }
 
+  private static addEslintScripts(): void {
+    addScriptToPackageJson("lint:check", "npx eslint src/*");
+    addScriptToPackageJson("lint:fix", "npx eslint src/* --fix");
+
+    Logger.success("Added default eslint scripts to package.json");
+    Logger.info(
+      "You can modify the scripts according to your needs, for more info: https://eslint.org/docs/latest/use/command-line-interface"
+    );
+  }
+
   public static async install(): Promise<void> {
     if (!isPackageInstalled("eslint")) {
       await this.initEslint();
       this.createEslintIgnoreConfiguration();
+      this.addEslintScripts();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
     }
