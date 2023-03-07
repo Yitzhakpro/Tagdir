@@ -5,12 +5,15 @@ import { isPackageInstalled, Logger, runCommand } from "../utils";
 class Eslint {
   private static async initEslint(): Promise<void> {
     try {
-      const eslintInitCommand = "npm init @eslint/config";
+      Logger.info("Initializing eslint...");
 
+      const eslintInitCommand = "npm init @eslint/config";
       // TODO: capture deps if didn't auto install, from stdout
       await runCommand(eslintInitCommand, true, {
         stdio: ["inherit", "inherit", "inherit"],
       });
+
+      Logger.success("Initialized eslint successfully!");
     } catch (error) {
       Logger.error("Failed to init eslint");
       console.error(error);
