@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { isPackageInstalled, Logger, runCommand } from "../utils";
 
 class Eslint {
@@ -16,9 +18,29 @@ class Eslint {
     }
   }
 
+  private static createEslintIgnoreConfiguration(): void {
+    const eslintIgnoreTemplateLocation = path.join(
+      __dirname,
+      "..",
+      "..",
+      "templates",
+      "eslint",
+      ".eslintignore"
+    );
+    const destinationPath = path.join(process.cwd(), ".eslintignore");
+
+    fs.copyFileSync(eslintIgnoreTemplateLocation, destinationPath);
+
+    Logger.success("Created default .eslintignore configuration file.");
+    Logger.info(
+      "You can modify the ignore file according to your needs, for more info: https://eslint.org/docs/latest/use/configure/ignore"
+    );
+  }
+
   public static async install(): Promise<void> {
     if (!isPackageInstalled("eslint")) {
       await this.initEslint();
+      this.createEslintIgnoreConfiguration();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
     }
