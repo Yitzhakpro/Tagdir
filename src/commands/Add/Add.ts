@@ -1,5 +1,5 @@
 import { Command, Argument } from "commander";
-import { Husky, Prettier } from "../../helpers";
+import { Eslint, Husky, Prettier } from "../../helpers";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
 import type { Configuration } from "./types";
@@ -33,6 +33,8 @@ class AddCommand {
         await Husky.install(packageManager);
       } else if (configuration === "prettier") {
         await Prettier.install(packageManager);
+      } else if (configuration === "eslint") {
+        await Eslint.install();
       }
     });
   }
