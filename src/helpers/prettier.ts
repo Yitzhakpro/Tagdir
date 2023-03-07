@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import {
+  addScriptToPackageJson,
   getConfirmation,
   getInstallCommand,
   isPackageInstalled,
@@ -77,11 +78,22 @@ class Prettier {
     );
   }
 
+  private static addPrettierScripts(): void {
+    addScriptToPackageJson("prettier:check", "npx prettier src/* --check");
+    addScriptToPackageJson("prettier:fix", "npx prettier src/* --write");
+
+    Logger.success("Added default prettier scripts to package.json");
+    Logger.info(
+      "You can modify the scripts according to your needs, for more info: https://prettier.io/docs/en/cli.html"
+    );
+  }
+
   public static async install(packageManager: PackageManager): Promise<void> {
     if (!isPackageInstalled("prettier")) {
       await this.installPrettier(packageManager);
       this.createPrettierConfiguration();
       this.createPrettierIgnoreConfiguration();
+      this.addPrettierScripts();
     } else {
       Logger.warn("Prettier is already installed, skipping.");
     }
