@@ -31,17 +31,21 @@ class AddCommand {
     const packageManager = await getPackageManagerName();
     const helperConfig: HelperConfig = { packageManager };
 
-    // if (configurations.includes("eslint")) {
-    //   await new Eslint.apply();
-    // }
+    // TODO: find a better way than constructing
+    if (configurations.includes("eslint")) {
+      const eslint = new Eslint();
+      await eslint.apply(helperConfig);
+    }
 
-    // if (configurations.includes("prettier")) {
-    //   await Prettier.install(packageManager);
-    // }
+    if (configurations.includes("prettier")) {
+      const prettier = new Prettier();
+      await prettier.apply(helperConfig);
+    }
 
-    // if (configurations.includes("husky")) {
-    //   await Husky.install(packageManager);
-    // }
+    if (configurations.includes("husky")) {
+      const husky = new Husky();
+      await husky.apply(helperConfig);
+    }
   }
 }
 
