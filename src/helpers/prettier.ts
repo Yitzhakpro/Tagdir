@@ -8,7 +8,7 @@ import {
   Logger,
   runCommand,
 } from "../utils";
-import type { PackageManager } from "../types";
+import type { HelperConfig, PackageManager } from "../types";
 import type { BaseHelper } from "./base";
 
 class Prettier implements BaseHelper {
@@ -90,8 +90,10 @@ class Prettier implements BaseHelper {
     );
   }
 
-  public async apply(packageManager: PackageManager): Promise<void> {
+  public async apply(config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("prettier")) {
+      const { packageManager } = config;
+
       await Prettier.installPrettier(packageManager);
       Prettier.createPrettierConfiguration();
       Prettier.createPrettierIgnoreConfiguration();

@@ -6,6 +6,7 @@ import {
   Logger,
   runCommand,
 } from "../utils";
+import type { HelperConfig } from "../types";
 import type { BaseHelper } from "./base";
 
 class Eslint implements BaseHelper {
@@ -57,7 +58,7 @@ class Eslint implements BaseHelper {
     );
   }
 
-  public async apply(): Promise<void> {
+  public async apply(_config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("eslint")) {
       await Eslint.initEslint();
       Eslint.createEslintIgnoreConfiguration();

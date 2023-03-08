@@ -7,7 +7,7 @@ import {
   getPackageRunnerCommand,
   runCommand,
 } from "../utils";
-import type { PackageManager } from "../types";
+import type { HelperConfig, PackageManager } from "../types";
 import type { BaseHelper } from "./base";
 
 class Husky implements BaseHelper {
@@ -109,7 +109,9 @@ class Husky implements BaseHelper {
     );
   }
 
-  public async apply(packageManager: PackageManager): Promise<void> {
+  public async apply(config: HelperConfig): Promise<void> {
+    const { packageManager } = config;
+
     if (!isPackageInstalled("husky")) {
       await Husky.installHusky(packageManager);
     } else {

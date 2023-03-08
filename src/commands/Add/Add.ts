@@ -2,6 +2,7 @@ import { Command, Argument } from "commander";
 import { Eslint, Husky, Prettier } from "../../helpers";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
+import type { HelperConfig } from "../../types";
 import type { Configuration } from "./types";
 
 // TODO: change to Add instead of AddCommand
@@ -28,6 +29,7 @@ class AddCommand {
 
   private async handler(configurations: Configuration[]): Promise<void> {
     const packageManager = await getPackageManagerName();
+    const helperConfig: HelperConfig = { packageManager };
 
     // if (configurations.includes("eslint")) {
     //   await new Eslint.apply();
