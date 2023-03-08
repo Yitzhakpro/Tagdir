@@ -9,8 +9,9 @@ import {
   runCommand,
 } from "../utils";
 import type { PackageManager } from "../types";
+import type { BaseHelper } from "./base";
 
-class Prettier {
+class Prettier implements BaseHelper {
   private static async installPrettier(
     packageManager: PackageManager
   ): Promise<void> {
@@ -40,6 +41,7 @@ class Prettier {
     }
   }
 
+  // TODO: add configuration according to project
   private static createPrettierConfiguration(): void {
     const prettierrcTemplateLocation = path.join(
       __dirname,
@@ -88,12 +90,12 @@ class Prettier {
     );
   }
 
-  public static async install(packageManager: PackageManager): Promise<void> {
+  public async apply(packageManager: PackageManager): Promise<void> {
     if (!isPackageInstalled("prettier")) {
-      await this.installPrettier(packageManager);
-      this.createPrettierConfiguration();
-      this.createPrettierIgnoreConfiguration();
-      this.addPrettierScripts();
+      await Prettier.installPrettier(packageManager);
+      Prettier.createPrettierConfiguration();
+      Prettier.createPrettierIgnoreConfiguration();
+      Prettier.addPrettierScripts();
     } else {
       Logger.warn("Prettier is already installed, skipping.");
     }

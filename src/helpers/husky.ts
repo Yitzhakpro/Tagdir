@@ -8,8 +8,9 @@ import {
   runCommand,
 } from "../utils";
 import type { PackageManager } from "../types";
+import type { BaseHelper } from "./base";
 
-class Husky {
+class Husky implements BaseHelper {
   private static async installHusky(
     packageManager: PackageManager
   ): Promise<void> {
@@ -108,9 +109,9 @@ class Husky {
     );
   }
 
-  public static async install(packageManager: PackageManager): Promise<void> {
+  public async apply(packageManager: PackageManager): Promise<void> {
     if (!isPackageInstalled("husky")) {
-      await this.installHusky(packageManager);
+      await Husky.installHusky(packageManager);
     } else {
       Logger.warn("Husky is already installed, skipping.");
     }
@@ -122,8 +123,8 @@ class Husky {
 
     if (shouldInstallLintStaged) {
       if (!isPackageInstalled("lint-staged")) {
-        await this.installLintStaged(packageManager);
-        this.createLintStagedConfiguration();
+        await Husky.installLintStaged(packageManager);
+        Husky.createLintStagedConfiguration();
       } else {
         Logger.warn("Lint-staged is already installed, skipping.");
       }

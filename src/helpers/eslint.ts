@@ -6,8 +6,9 @@ import {
   Logger,
   runCommand,
 } from "../utils";
+import type { BaseHelper } from "./base";
 
-class Eslint {
+class Eslint implements BaseHelper {
   private static async initEslint(): Promise<void> {
     try {
       Logger.info("Initializing eslint...");
@@ -27,6 +28,7 @@ class Eslint {
   }
 
   private static createEslintIgnoreConfiguration(): void {
+    // TODO: create generic function for copy template files to use later in all helpers.
     const eslintIgnoreTemplateLocation = path.join(
       __dirname,
       "..",
@@ -55,11 +57,11 @@ class Eslint {
     );
   }
 
-  public static async install(): Promise<void> {
+  public async apply(): Promise<void> {
     if (!isPackageInstalled("eslint")) {
-      await this.initEslint();
-      this.createEslintIgnoreConfiguration();
-      this.addEslintScripts();
+      await Eslint.initEslint();
+      Eslint.createEslintIgnoreConfiguration();
+      Eslint.addEslintScripts();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
     }

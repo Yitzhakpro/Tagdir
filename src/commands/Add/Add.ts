@@ -4,6 +4,7 @@ import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
 import type { Configuration } from "./types";
 
+// TODO: change to Add instead of AddCommand
 class AddCommand {
   public command: Command;
 
@@ -28,15 +29,17 @@ class AddCommand {
   private async handler(configurations: Configuration[]): Promise<void> {
     const packageManager = await getPackageManagerName();
 
-    configurations.forEach(async (configuration) => {
-      if (configuration === "husky") {
-        await Husky.install(packageManager);
-      } else if (configuration === "prettier") {
-        await Prettier.install(packageManager);
-      } else if (configuration === "eslint") {
-        await Eslint.install();
-      }
-    });
+    // if (configurations.includes("eslint")) {
+    //   await new Eslint.apply();
+    // }
+
+    // if (configurations.includes("prettier")) {
+    //   await Prettier.install(packageManager);
+    // }
+
+    // if (configurations.includes("husky")) {
+    //   await Husky.install(packageManager);
+    // }
   }
 }
 
