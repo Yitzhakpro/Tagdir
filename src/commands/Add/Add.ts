@@ -1,9 +1,8 @@
 import { Command, Argument } from "commander";
-import { Eslint, Husky, Prettier } from "../../helpers";
+import { CONFIGURATIONS_ORDER } from "../../helpers";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
-import type { HelperConfig } from "../../types";
-import type { Configuration } from "./types";
+import type { Configuration, HelperConfig } from "../../types";
 
 class Add {
   public command: Command;
@@ -30,21 +29,11 @@ class Add {
     const packageManager = await getPackageManagerName();
     const helperConfig: HelperConfig = { packageManager };
 
-    // TODO: find a better way than constructing
-    if (configurations.includes("eslint")) {
-      const eslint = new Eslint();
-      await eslint.apply(helperConfig);
-    }
-
-    if (configurations.includes("prettier")) {
-      const prettier = new Prettier();
-      await prettier.apply(helperConfig);
-    }
-
-    if (configurations.includes("husky")) {
-      const husky = new Husky();
-      await husky.apply(helperConfig);
-    }
+    CONFIGURATIONS_ORDER.forEach(async (configOrder) => {
+      if (configurations.includes(configOrder.name)) {
+        await configOrder.apply(helperConfig);
+      }
+    });
   }
 }
 

@@ -1,5 +1,7 @@
 import type { HelperConfig } from "../types";
 
+export type ApplyFunction = (config: HelperConfig) => Promise<void>;
+
 export interface BaseHelper {
-  apply: (config: HelperConfig) => Promise<void>;
+  apply: ApplyFunction;
 }
