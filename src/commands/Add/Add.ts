@@ -5,8 +5,7 @@ import { CONFIGURATIONS } from "./constants";
 import type { HelperConfig } from "../../types";
 import type { Configuration } from "./types";
 
-// TODO: change to Add instead of AddCommand
-class AddCommand {
+class Add {
   public command: Command;
 
   constructor() {
@@ -49,4 +48,4 @@ class AddCommand {
   }
 }
 
-export default new AddCommand();
+export default new Add();
