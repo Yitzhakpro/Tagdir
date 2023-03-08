@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import { Add } from "./commands";
 
-export default class Enhancer {
+export default class Program {
   private program: Command;
 
   constructor() {
