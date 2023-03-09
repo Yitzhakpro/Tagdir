@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import {
   addScriptToPackageJson,
+  copyTemplateFiles,
   isPackageInstalled,
   Logger,
   runCommand,
@@ -29,18 +30,7 @@ class Eslint implements BaseHelper {
   }
 
   private static createEslintIgnoreConfiguration(): void {
-    // TODO: create generic function for copy template files to use later in all helpers.
-    const eslintIgnoreTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "eslint",
-      ".eslintignore"
-    );
-    const destinationPath = path.join(process.cwd(), ".eslintignore");
-
-    fs.copyFileSync(eslintIgnoreTemplateLocation, destinationPath);
+    copyTemplateFiles("eslint", process.cwd());
 
     Logger.success("Created default .eslintignore configuration file.");
     Logger.info(

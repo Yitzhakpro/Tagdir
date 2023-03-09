@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import {
   addScriptToPackageJson,
+  copyTemplateFiles,
   getConfirmation,
   getInstallCommand,
   isPackageInstalled,
@@ -42,38 +43,13 @@ class Prettier implements BaseHelper {
   }
 
   // TODO: add configuration according to project
-  private static createPrettierConfiguration(): void {
-    const prettierrcTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "prettier",
-      ".prettierrc"
-    );
-    const destinationPath = path.join(process.cwd(), ".prettierrc");
-
-    fs.copyFileSync(prettierrcTemplateLocation, destinationPath);
+  private static createPrettierConfigurations(): void {
+    copyTemplateFiles("eslint", process.cwd());
 
     Logger.success("Created default .prettierrc configuration file.");
     Logger.info(
       "You can modify the config file according to your needs, for more info: https://prettier.io/docs/en/options.html"
     );
-  }
-
-  private static createPrettierIgnoreConfiguration(): void {
-    const prettierrcIgnoreTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "prettier",
-      ".prettierignore"
-    );
-    const destinationPath = path.join(process.cwd(), ".prettierignore");
-
-    fs.copyFileSync(prettierrcIgnoreTemplateLocation, destinationPath);
-
     Logger.success("Created default .prettierignore configuration file.");
     Logger.info(
       "You can modify the ignore file according to your needs, for more info: https://prettier.io/docs/en/ignore.html"
@@ -95,8 +71,7 @@ class Prettier implements BaseHelper {
       const { packageManager } = config;
 
       await Prettier.installPrettier(packageManager);
-      Prettier.createPrettierConfiguration();
-      Prettier.createPrettierIgnoreConfiguration();
+      Prettier.createPrettierConfigurations();
       Prettier.addPrettierScripts();
     } else {
       Logger.warn("Prettier is already installed, skipping.");

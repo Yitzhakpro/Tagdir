@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Logger, getInstallCommand, getInstallAllDepsCommand } from "../utils";
 import {
+  copyTemplateFiles,
   isPackageInstalled,
   getConfirmation,
   getPackageRunnerCommand,
@@ -76,17 +77,7 @@ class Husky implements BaseHelper {
   }
 
   private static createLintStagedConfiguration(): void {
-    const lintStagedTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "lintStaged",
-      ".lintstagedrc"
-    );
-    const destinationPath = path.join(process.cwd(), ".lintstagedrc");
-
-    fs.copyFileSync(lintStagedTemplateLocation, destinationPath);
+    copyTemplateFiles("lintStaged", process.cwd());
 
     // modifing .pre-commit husky file to npx lint-staged
     const preCommitHuskyLocation = path.join(
