@@ -1,16 +1,16 @@
-import fs from "fs";
-import path from "path";
 import {
   addScriptToPackageJson,
+  copyTemplateFiles,
   getConfirmation,
   getInstallCommand,
   isPackageInstalled,
   Logger,
   runCommand,
 } from "../utils";
-import type { PackageManager } from "../types";
+import type { HelperConfig, PackageManager } from "../types";
+import type { BaseHelper } from "./base";
 
-class Prettier {
+class Prettier implements BaseHelper {
   private static async installPrettier(
     packageManager: PackageManager
   ): Promise<void> {
@@ -40,38 +40,14 @@ class Prettier {
     }
   }
 
-  private static createPrettierConfiguration(): void {
-    const prettierrcTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "prettier",
-      ".prettierrc"
-    );
-    const destinationPath = path.join(process.cwd(), ".prettierrc");
-
-    fs.copyFileSync(prettierrcTemplateLocation, destinationPath);
+  // TODO: add configuration according to project
+  private static createPrettierConfigurations(): void {
+    copyTemplateFiles("eslint", process.cwd());
 
     Logger.success("Created default .prettierrc configuration file.");
     Logger.info(
       "You can modify the config file according to your needs, for more info: https://prettier.io/docs/en/options.html"
     );
-  }
-
-  private static createPrettierIgnoreConfiguration(): void {
-    const prettierrcIgnoreTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "prettier",
-      ".prettierignore"
-    );
-    const destinationPath = path.join(process.cwd(), ".prettierignore");
-
-    fs.copyFileSync(prettierrcIgnoreTemplateLocation, destinationPath);
-
     Logger.success("Created default .prettierignore configuration file.");
     Logger.info(
       "You can modify the ignore file according to your needs, for more info: https://prettier.io/docs/en/ignore.html"
@@ -88,12 +64,13 @@ class Prettier {
     );
   }
 
-  public static async install(packageManager: PackageManager): Promise<void> {
+  public async apply(config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("prettier")) {
-      await this.installPrettier(packageManager);
-      this.createPrettierConfiguration();
-      this.createPrettierIgnoreConfiguration();
-      this.addPrettierScripts();
+      const { packageManager } = config;
+
+      await Prettier.installPrettier(packageManager);
+      Prettier.createPrettierConfigurations();
+      Prettier.addPrettierScripts();
     } else {
       Logger.warn("Prettier is already installed, skipping.");
     }

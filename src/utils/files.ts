@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import readline from "readline";
 
 export const readNthLine = async (
@@ -21,4 +22,26 @@ export const readNthLine = async (
   }
 
   throw new Error(`Could not parse file ${filePath}`);
+};
+
+export const copyTemplateFiles = (
+  templateType: string,
+  destination: string
+) => {
+  const templateFolderLocation = path.join(
+    __dirname,
+    "..",
+    "..",
+    "templates",
+    templateType
+  );
+
+  const templateFiles = fs.readdirSync(templateFolderLocation);
+
+  templateFiles.forEach((fileName) => {
+    const fullTemplateFilePath = path.join(templateFolderLocation, fileName);
+    const destinationTemplatePath = path.join(destination, fileName);
+
+    fs.copyFileSync(fullTemplateFilePath, destinationTemplatePath);
+  });
 };

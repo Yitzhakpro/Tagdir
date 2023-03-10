@@ -2,14 +2,16 @@ import fs from "fs";
 import path from "path";
 import { Logger, getInstallCommand, getInstallAllDepsCommand } from "../utils";
 import {
+  copyTemplateFiles,
   isPackageInstalled,
   getConfirmation,
   getPackageRunnerCommand,
   runCommand,
 } from "../utils";
-import type { PackageManager } from "../types";
+import type { HelperConfig, PackageManager } from "../types";
+import type { BaseHelper } from "./base";
 
-class Husky {
+class Husky implements BaseHelper {
   private static async installHusky(
     packageManager: PackageManager
   ): Promise<void> {
@@ -75,17 +77,7 @@ class Husky {
   }
 
   private static createLintStagedConfiguration(): void {
-    const lintStagedTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "lintStaged",
-      ".lintstagedrc"
-    );
-    const destinationPath = path.join(process.cwd(), ".lintstagedrc");
-
-    fs.copyFileSync(lintStagedTemplateLocation, destinationPath);
+    copyTemplateFiles("lintStaged", process.cwd());
 
     // modifing .pre-commit husky file to npx lint-staged
     const preCommitHuskyLocation = path.join(
@@ -108,9 +100,11 @@ class Husky {
     );
   }
 
-  public static async install(packageManager: PackageManager): Promise<void> {
+  public async apply(config: HelperConfig): Promise<void> {
+    const { packageManager } = config;
+
     if (!isPackageInstalled("husky")) {
-      await this.installHusky(packageManager);
+      await Husky.installHusky(packageManager);
     } else {
       Logger.warn("Husky is already installed, skipping.");
     }
@@ -122,8 +116,8 @@ class Husky {
 
     if (shouldInstallLintStaged) {
       if (!isPackageInstalled("lint-staged")) {
-        await this.installLintStaged(packageManager);
-        this.createLintStagedConfiguration();
+        await Husky.installLintStaged(packageManager);
+        Husky.createLintStagedConfiguration();
       } else {
         Logger.warn("Lint-staged is already installed, skipping.");
       }

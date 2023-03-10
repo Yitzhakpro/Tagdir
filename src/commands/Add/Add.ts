@@ -1,10 +1,10 @@
 import { Command, Argument } from "commander";
-import { Eslint, Husky, Prettier } from "../../helpers";
+import { CONFIGURATIONS_ORDER } from "../../helpers";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
-import type { Configuration } from "./types";
+import type { Configuration, HelperConfig } from "../../types";
 
-class AddCommand {
+class Add {
   public command: Command;
 
   constructor() {
@@ -27,17 +27,14 @@ class AddCommand {
 
   private async handler(configurations: Configuration[]): Promise<void> {
     const packageManager = await getPackageManagerName();
+    const helperConfig: HelperConfig = { packageManager };
 
-    configurations.forEach(async (configuration) => {
-      if (configuration === "husky") {
-        await Husky.install(packageManager);
-      } else if (configuration === "prettier") {
-        await Prettier.install(packageManager);
-      } else if (configuration === "eslint") {
-        await Eslint.install();
+    CONFIGURATIONS_ORDER.forEach(async (configOrder) => {
+      if (configurations.includes(configOrder.name)) {
+        await configOrder.apply(helperConfig);
       }
     });
   }
 }
 
-export default new AddCommand();
+export default new Add();

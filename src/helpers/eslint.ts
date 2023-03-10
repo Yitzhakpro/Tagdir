@@ -1,13 +1,14 @@
-import fs from "fs";
-import path from "path";
 import {
   addScriptToPackageJson,
+  copyTemplateFiles,
   isPackageInstalled,
   Logger,
   runCommand,
 } from "../utils";
+import type { HelperConfig } from "../types";
+import type { BaseHelper } from "./base";
 
-class Eslint {
+class Eslint implements BaseHelper {
   private static async initEslint(): Promise<void> {
     try {
       Logger.info("Initializing eslint...");
@@ -26,18 +27,8 @@ class Eslint {
     }
   }
 
-  private static createEslintIgnoreConfiguration(): void {
-    const eslintIgnoreTemplateLocation = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates",
-      "eslint",
-      ".eslintignore"
-    );
-    const destinationPath = path.join(process.cwd(), ".eslintignore");
-
-    fs.copyFileSync(eslintIgnoreTemplateLocation, destinationPath);
+  private static createEslintConfigurations(): void {
+    copyTemplateFiles("eslint", process.cwd());
 
     Logger.success("Created default .eslintignore configuration file.");
     Logger.info(
@@ -55,11 +46,11 @@ class Eslint {
     );
   }
 
-  public static async install(): Promise<void> {
+  public async apply(_config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("eslint")) {
-      await this.initEslint();
-      this.createEslintIgnoreConfiguration();
-      this.addEslintScripts();
+      await Eslint.initEslint();
+      Eslint.createEslintConfigurations();
+      Eslint.addEslintScripts();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
     }

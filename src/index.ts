@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import Enhancer from "./Program";
+import Program from "./Program";
 
-const enhancer = new Enhancer();
-enhancer.parse(process.argv);
+const program = new Program();
+program.parse(process.argv);
