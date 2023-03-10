@@ -29,7 +29,7 @@ class Eslint implements BaseHelper {
     }
   }
 
-  private static createEslintIgnoreConfiguration(): void {
+  private static createEslintConfigurations(): void {
     copyTemplateFiles("eslint", process.cwd());
 
     Logger.success("Created default .eslintignore configuration file.");
@@ -51,7 +51,7 @@ class Eslint implements BaseHelper {
   public async apply(_config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("eslint")) {
       await Eslint.initEslint();
-      Eslint.createEslintIgnoreConfiguration();
+      Eslint.createEslintConfigurations();
       Eslint.addEslintScripts();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
