@@ -27,8 +27,13 @@ class Eslint implements BaseHelper {
     }
   }
 
+  private static enhanceDefaultConfiguration() {
+    // TODO: implement
+  }
+
   private static createEslintConfigurations(): void {
     copyTemplateFiles("eslint", process.cwd());
+    Eslint.enhanceDefaultConfiguration();
 
     Logger.success("Created default .eslintignore configuration file.");
     Logger.info(
