@@ -1,10 +1,8 @@
 export class EslintPlugin {
-  private name: string;
   private packageName: string;
   private builtInConfigName?: string;
 
-  constructor(name: string, packageName: string, builtInConfigName?: string) {
-    this.name = name;
+  constructor(packageName: string, builtInConfigName?: string) {
     this.packageName = packageName;
     this.builtInConfigName = builtInConfigName;
   }
