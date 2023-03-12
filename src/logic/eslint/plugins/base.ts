@@ -1,9 +1,15 @@
 export class EslintPlugin {
   private packageName: string;
+  private rules?: Record<any, any>;
   private builtInConfigName?: string;
 
-  constructor(packageName: string, builtInConfigName?: string) {
+  constructor(
+    packageName: string,
+    rules?: Record<any, any>,
+    builtInConfigName?: string
+  ) {
     this.packageName = packageName;
+    this.rules = rules;
     this.builtInConfigName = builtInConfigName;
   }
 
@@ -29,8 +35,7 @@ export class EslintPlugin {
     return "";
   }
 
-  public getRules(): string {
-    // TODO: implement
-    return "";
+  public getRules(): Record<any, any> | undefined {
+    return this.rules;
   }
 }

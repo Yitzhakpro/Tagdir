@@ -1,5 +1,5 @@
 import { Command, Argument } from "commander";
-import { CONFIGURATIONS_ORDER } from "../../helpers";
+import { CONFIGURATIONS_ORDER } from "../../logic";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
 import type { Configuration, HelperConfig } from "../../types";

@@ -4,9 +4,9 @@ import {
   isPackageInstalled,
   Logger,
   runCommand,
-} from "../utils";
-import type { HelperConfig } from "../types";
-import type { BaseHelper } from "./base";
+} from "../../utils";
+import type { HelperConfig } from "../../types";
+import type { BaseHelper } from "../base";
 
 class Eslint implements BaseHelper {
   private static async initEslint(): Promise<void> {
