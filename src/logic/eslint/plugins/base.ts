@@ -1,5 +1,6 @@
 import type { EslintRule } from "./types";
 
+// TODO: add support for installing configs
 export class EslintPlugin {
   private packageName: string;
   private rules?: EslintRule;
