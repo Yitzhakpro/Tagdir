@@ -1,11 +1,13 @@
+import type { EslintRule } from "./types";
+
 export class EslintPlugin {
   private packageName: string;
-  private rules?: Record<any, any>;
+  private rules?: EslintRule;
   private builtInConfigName?: string;
 
   constructor(
     packageName: string,
-    rules?: Record<any, any>,
+    rules?: EslintRule,
     builtInConfigName?: string
   ) {
     this.packageName = packageName;
@@ -35,7 +37,7 @@ export class EslintPlugin {
     return "";
   }
 
-  public getRules(): Record<any, any> | undefined {
+  public getRules(): EslintRule | undefined {
     return this.rules;
   }
 }
