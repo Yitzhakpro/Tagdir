@@ -86,3 +86,24 @@ export const convertConfigToJson = async (
     return yamlToJSON;
   }
 };
+
+export const convertJsonToConfig = (
+  config: Record<string, unknown>,
+  toExtension: ConfigExtensions
+): string => {
+  if (toExtension === "yaml" || toExtension === "yml") {
+    const configStr = yaml.stringify(config);
+
+    return configStr;
+  }
+
+  const jsonData = JSON.stringify(config, null, 2);
+
+  if (toExtension === "cjs" || toExtension === "js") {
+    const configStr = `module.exports = ${jsonData}`;
+
+    return configStr;
+  }
+
+  return jsonData;
+};

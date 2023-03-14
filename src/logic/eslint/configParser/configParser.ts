@@ -1,5 +1,10 @@
+import fs from "fs";
 import path from "path";
-import { convertConfigToJson, getExistingFileExtension } from "../../../utils";
+import {
+  convertConfigToJson,
+  convertJsonToConfig,
+  getExistingFileExtension,
+} from "../../../utils";
 import { ESLINT_CONFIG_EXTENSION } from "./constants";
 import type { ConfigExtensions } from "../../../types";
 import type { EslintPlugin, EslintRule } from "../plugins";
@@ -73,7 +78,8 @@ class EslintConfigParser {
       }
     }
 
-    console.log(config);
+    const configStr = convertJsonToConfig(config, this.configExtension);
+    fs.writeFileSync(this.eslintConfigPath, configStr);
   }
 }
 
