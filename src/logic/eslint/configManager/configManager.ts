@@ -4,12 +4,14 @@ import {
   convertConfigToJson,
   convertJsonToConfig,
   getExistingFileExtension,
+  getInstallCommand,
+  runCommand,
 } from "../../../utils";
 import { ESLINT_CONFIG_EXTENSION } from "./constants";
-import type { ConfigExtensions } from "../../../types";
+import type { ConfigExtensions, PackageManager } from "../../../types";
 import type { EslintPlugin, EslintRule } from "../plugins";
 
-class EslintConfigParser {
+class EslintConfigManager {
   private eslintConfigPath: string;
   private configExtension: ConfigExtensions;
 
@@ -54,7 +56,11 @@ class EslintConfigParser {
     config.rules = { ...config.rules, ...pluginRules };
   }
 
-  public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
+  // TODO: think of better way to pass packageManager
+  public async addPlugins(
+    packageManager: PackageManager,
+    ...plugins: EslintPlugin[]
+  ): Promise<void> {
     const config = await convertConfigToJson(
       this.eslintConfigPath,
       this.configExtension
@@ -65,9 +71,18 @@ class EslintConfigParser {
         pluginA.getConfigurationPriority() - pluginB.getConfigurationPriority()
     );
     for (const plugin of sortedPlugins) {
+      const pluginInstallations = plugin.getNeededPackages();
       const pluginName = plugin.getPluginName();
       const pluginExtend = plugin.getExtend();
       const pluginRules = plugin.getRules();
+
+      // installing the plugin
+      const pluginInstallCommand = getInstallCommand(
+        packageManager,
+        pluginInstallations.join(" "),
+        true
+      );
+      await runCommand(pluginInstallCommand);
 
       this.addToPlugins(config, pluginName);
       if (pluginExtend) {
@@ -83,4 +98,4 @@ class EslintConfigParser {
   }
 }
 
-export default EslintConfigParser;
+export default EslintConfigManager;
