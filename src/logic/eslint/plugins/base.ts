@@ -4,16 +4,19 @@ import type { EslintRule } from "./types";
 export class EslintPlugin {
   private packageName: string;
   private rules?: EslintRule;
-  private builtInConfigName?: string;
+  private sharedConfigName?: string;
+  private configurationPackageName?: string;
 
   constructor(
     packageName: string,
     rules?: EslintRule,
-    builtInConfigName?: string
+    sharedConfigName?: string,
+    configurationPackageName?: string
   ) {
     this.packageName = packageName;
     this.rules = rules;
-    this.builtInConfigName = builtInConfigName;
+    this.sharedConfigName = sharedConfigName;
+    this.configurationPackageName = configurationPackageName;
   }
 
   public getPluginName(): string {
@@ -28,17 +31,31 @@ export class EslintPlugin {
     return splitedEslintPluginName[1];
   }
 
-  public getExtend(configExtensionName?: string): string {
-    if (configExtensionName) {
-      return `plugin:${this.getPluginName()}/${configExtensionName}`;
-    } else if (this.builtInConfigName) {
-      return this.builtInConfigName;
+  public getExtend(): string | null {
+    if (this.configurationPackageName) {
+      const splitedConfigurationPackageName =
+        this.configurationPackageName.split("eslint-config-");
+
+      return splitedConfigurationPackageName[1];
+    } else if (this.sharedConfigName) {
+      return `plugin:${this.getPluginName()}/${this.sharedConfigName}`;
     }
 
-    return "";
+    return null;
   }
 
   public getRules(): EslintRule | undefined {
     return this.rules;
+  }
+
+  public getNeededPackages(): string[] {
+    const packages: string[] = [];
+
+    packages.push(this.packageName);
+    if (this.configurationPackageName) {
+      packages.push(this.configurationPackageName);
+    }
+
+    return packages;
   }
 }
