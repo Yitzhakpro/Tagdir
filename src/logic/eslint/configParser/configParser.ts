@@ -1,12 +1,12 @@
 import path from "path";
-import { getExistingFileExtension } from "../../../utils";
+import { convertConfigToJson, getExistingFileExtension } from "../../../utils";
 import { ESLINT_CONFIG_EXTENSION } from "./constants";
+import type { ConfigExtensions } from "../../../types";
 import type { EslintPlugin } from "../plugins";
-import type { EslintConfigExtensions } from "./types";
 
 class EslintConfigParser {
   private eslintConfigPath: string;
-  private configExtension: EslintConfigExtensions;
+  private configExtension: ConfigExtensions;
 
   constructor() {
     this.configExtension = getExistingFileExtension(
@@ -20,7 +20,22 @@ class EslintConfigParser {
     );
   }
 
-  public addPlugins(...plugins: EslintPlugin[]): void {}
+  private addToExtends() {}
+
+  private addToPlugins() {}
+
+  private addToRules() {}
+
+  public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
+    const config = await convertConfigToJson(
+      this.eslintConfigPath,
+      this.configExtension
+    );
+
+    for (const plugin of plugins) {
+      //
+    }
+  }
 }
 
 export default EslintConfigParser;

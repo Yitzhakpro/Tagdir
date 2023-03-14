@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import readline from "readline";
+import yaml from "yaml";
+import type { ConfigExtensions } from "../types";
 
 export const readNthLine = async (
   filePath: string,
@@ -59,4 +61,28 @@ export const getExistingFileExtension = <T>(
   }
 
   throw new Error(`Could not find any possible files for: ${filename}`);
+};
+
+export const convertConfigToJson = async (
+  configPath: string,
+  extension: ConfigExtensions
+): Promise<Record<string, unknown>> => {
+  if (extension === "js" || extension === "cjs") {
+    const config = await import(configPath);
+    const jsonString = JSON.stringify(config);
+    const jsonConfig: Record<string, unknown> = JSON.parse(jsonString);
+
+    return jsonConfig;
+  }
+
+  const configFileBuffer = fs.readFileSync(configPath);
+  const configFileString = configFileBuffer.toString();
+
+  if (extension === "json") {
+    const jsonConfig: Record<string, unknown> = JSON.parse(configFileString);
+    return jsonConfig;
+  } else {
+    const yamlToJSON: Record<string, unknown> = yaml.parse(configFileString);
+    return yamlToJSON;
+  }
 };

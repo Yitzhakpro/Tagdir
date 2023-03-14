@@ -1,6 +1,6 @@
-import type { EslintConfigExtensions } from "./types";
+import type { ConfigExtensions } from "../../../types";
 
-export const ESLINT_CONFIG_EXTENSION: EslintConfigExtensions[] = [
+export const ESLINT_CONFIG_EXTENSION: ConfigExtensions[] = [
   "js",
   "cjs",
   "yaml",
