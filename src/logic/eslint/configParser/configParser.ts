@@ -2,7 +2,7 @@ import path from "path";
 import { convertConfigToJson, getExistingFileExtension } from "../../../utils";
 import { ESLINT_CONFIG_EXTENSION } from "./constants";
 import type { ConfigExtensions } from "../../../types";
-import type { EslintPlugin } from "../plugins";
+import type { EslintPlugin, EslintRule } from "../plugins";
 
 class EslintConfigParser {
   private eslintConfigPath: string;
@@ -20,11 +20,14 @@ class EslintConfigParser {
     );
   }
 
-  private addToExtends() {}
+  private addToExtends(config: Record<string, unknown>, pluginExtend: string) {}
 
-  private addToPlugins() {}
+  private addToPlugins(config: Record<string, unknown>, pluginName: string) {}
 
-  private addToRules() {}
+  private addToRules(
+    config: Record<string, unknown>,
+    pluginRules: EslintRule
+  ) {}
 
   public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
     const config = await convertConfigToJson(
@@ -33,7 +36,17 @@ class EslintConfigParser {
     );
 
     for (const plugin of plugins) {
-      //
+      const pluginName = plugin.getPluginName();
+      const pluginExtend = plugin.getExtend();
+      const pluginRules = plugin.getRules();
+
+      this.addToPlugins(config, pluginName);
+      if (pluginExtend) {
+        this.addToExtends(config, pluginExtend);
+      }
+      if (pluginRules) {
+        this.addToRules(config, pluginRules);
+      }
     }
   }
 }
