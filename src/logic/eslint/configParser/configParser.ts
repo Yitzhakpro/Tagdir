@@ -20,8 +20,18 @@ class EslintConfigParser {
     );
   }
 
-  // TODO: think about implementation
-  private addToExtends(config: Record<string, unknown>, pluginExtend: string) {}
+  private addToExtends(config: Record<string, any>, pluginExtend: string) {
+    if (!config.extends) {
+      config.extends = [];
+    } else if (
+      typeof config.extends === "string" ||
+      config.extends instanceof String
+    ) {
+      config.extends = [config.extends];
+    }
+
+    config.extends.push(pluginExtend);
+  }
 
   private addToPlugins(config: Record<string, any>, pluginName: string) {
     if (!config.plugins) {
