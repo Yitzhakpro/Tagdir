@@ -10,7 +10,8 @@ export class PrettierPlugin extends EslintPlugin {
         "prefer-arrow-callback": "off",
       },
       "recommended",
-      "eslint-config-prettier"
+      "eslint-config-prettier",
+      9999
     );
   }
 }

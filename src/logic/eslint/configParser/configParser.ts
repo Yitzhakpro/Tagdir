@@ -55,7 +55,11 @@ class EslintConfigParser {
       this.configExtension
     );
 
-    for (const plugin of plugins) {
+    const sortedPlugins = plugins.sort(
+      (pluginA, pluginB) =>
+        pluginA.getConfigurationPriority() - pluginB.getConfigurationPriority()
+    );
+    for (const plugin of sortedPlugins) {
       const pluginName = plugin.getPluginName();
       const pluginExtend = plugin.getExtend();
       const pluginRules = plugin.getRules();

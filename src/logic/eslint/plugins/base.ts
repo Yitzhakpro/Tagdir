@@ -5,17 +5,20 @@ export class EslintPlugin {
   private rules?: EslintRule;
   private sharedConfigName?: string;
   private configurationPackageName?: string;
+  private configurationPriority: number; // TODO: think of better solution
 
   constructor(
     packageName: string,
     rules?: EslintRule,
     sharedConfigName?: string,
-    configurationPackageName?: string
+    configurationPackageName?: string,
+    configurationPriority = 0
   ) {
     this.packageName = packageName;
     this.rules = rules;
     this.sharedConfigName = sharedConfigName;
     this.configurationPackageName = configurationPackageName;
+    this.configurationPriority = configurationPriority;
   }
 
   public getPluginName(): string {
@@ -56,5 +59,9 @@ export class EslintPlugin {
     }
 
     return packages;
+  }
+
+  public getConfigurationPriority(): number {
+    return this.configurationPriority;
   }
 }
