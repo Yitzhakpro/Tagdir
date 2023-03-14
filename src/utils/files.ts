@@ -45,3 +45,18 @@ export const copyTemplateFiles = (
     fs.copyFileSync(fullTemplateFilePath, destinationTemplatePath);
   });
 };
+
+export const getExistingFileExtension = <T>(
+  filename: string,
+  extensions: T[],
+  basePath: string
+): T => {
+  for (const extention of extensions) {
+    const fullFilePath = path.join(basePath, `${filename}.${extention}`);
+    if (fs.existsSync(fullFilePath)) {
+      return extention;
+    }
+  }
+
+  throw new Error(`Could not find any possible files for: ${filename}`);
+};
