@@ -23,8 +23,13 @@ class EslintConfigParser {
   // TODO: think about implementation
   private addToExtends(config: Record<string, unknown>, pluginExtend: string) {}
 
-  // TODO: think about implementation
-  private addToPlugins(config: Record<string, unknown>, pluginName: string) {}
+  private addToPlugins(config: Record<string, any>, pluginName: string) {
+    if (!config.plugins) {
+      config.plugins = [];
+    }
+
+    config.plugins.push(pluginName);
+  }
 
   private addToRules(config: Record<string, any>, pluginRules: EslintRule) {
     if (!config.rules) {
