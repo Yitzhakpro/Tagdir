@@ -20,14 +20,19 @@ class EslintConfigParser {
     );
   }
 
+  // TODO: think about implementation
   private addToExtends(config: Record<string, unknown>, pluginExtend: string) {}
 
+  // TODO: think about implementation
   private addToPlugins(config: Record<string, unknown>, pluginName: string) {}
 
-  private addToRules(
-    config: Record<string, unknown>,
-    pluginRules: EslintRule
-  ) {}
+  private addToRules(config: Record<string, any>, pluginRules: EslintRule) {
+    if (!config.rules) {
+      config.rules = {};
+    }
+
+    config.rules = { ...config.rules, ...pluginRules };
+  }
 
   public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
     const config = await convertConfigToJson(
@@ -48,6 +53,8 @@ class EslintConfigParser {
         this.addToRules(config, pluginRules);
       }
     }
+
+    console.log(config);
   }
 }
 
