@@ -1,3 +1,4 @@
 import Eslint from "./eslint";
+import EslintConfigManager from "./configManager";
 
-export default Eslint;
+export { Eslint, EslintConfigManager };

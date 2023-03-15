@@ -12,10 +12,12 @@ import type { ConfigExtensions, PackageManager } from "../../../types";
 import type { EslintPlugin, EslintRule } from "../plugins";
 
 class EslintConfigManager {
+  private packageManager: PackageManager;
   private eslintConfigPath: string;
   private configExtension: ConfigExtensions;
 
-  constructor() {
+  constructor(packageManager: PackageManager) {
+    this.packageManager = packageManager;
     this.configExtension = getExistingFileExtension(
       ".eslintrc",
       ESLINT_CONFIG_EXTENSION,
@@ -57,10 +59,7 @@ class EslintConfigManager {
   }
 
   // TODO: think of better way to pass packageManager
-  public async addPlugins(
-    packageManager: PackageManager,
-    ...plugins: EslintPlugin[]
-  ): Promise<void> {
+  public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
     const config = await convertConfigToJson(
       this.eslintConfigPath,
       this.configExtension
@@ -78,7 +77,7 @@ class EslintConfigManager {
 
       // installing the plugin
       const pluginInstallCommand = getInstallCommand(
-        packageManager,
+        this.packageManager,
         pluginInstallations.join(" "),
         true
       );
