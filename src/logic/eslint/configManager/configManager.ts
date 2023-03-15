@@ -7,7 +7,7 @@ import {
   getInstallCommand,
   runCommand,
 } from "../../../utils";
-import { ESLINT_CONFIG_EXTENSION } from "./constants";
+import { ESLINT_CONFIG_EXTENSION } from "../../../constants";
 import type { ConfigExtensions, PackageManager } from "../../../types";
 import type { EslintPlugin, EslintRule } from "../plugins";
 

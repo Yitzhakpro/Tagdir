@@ -1,4 +1,4 @@
-import Eslint from "./eslint";
+import { Eslint } from "./eslint";
 import Husky from "./husky";
 import Prettier from "./prettier";
 import type { Configuration } from "../types";
