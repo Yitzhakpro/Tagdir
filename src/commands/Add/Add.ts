@@ -30,11 +30,11 @@ class Add {
     const eslintConfigManager = new EslintConfigManager(packageManager);
     const helperConfig: HelperConfig = { packageManager, eslintConfigManager };
 
-    CONFIGURATIONS_ORDER.forEach(async (configOrder) => {
+    for (const configOrder of CONFIGURATIONS_ORDER) {
       if (configurations.includes(configOrder.name)) {
         await configOrder.apply(helperConfig);
       }
-    });
+    }
   }
 }
 
