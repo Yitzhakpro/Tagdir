@@ -8,25 +8,14 @@ import {
   runCommand,
 } from "../../../utils";
 import { ESLINT_CONFIG_EXTENSION } from "../../../constants";
-import type { ConfigExtensions, PackageManager } from "../../../types";
+import type { PackageManager } from "../../../types";
 import type { EslintPlugin, EslintRule } from "../plugins";
 
 class EslintConfigManager {
   private packageManager: PackageManager;
-  private eslintConfigPath: string;
-  private configExtension: ConfigExtensions;
 
   constructor(packageManager: PackageManager) {
     this.packageManager = packageManager;
-    this.configExtension = getExistingFileExtension(
-      ".eslintrc",
-      ESLINT_CONFIG_EXTENSION,
-      process.cwd()
-    );
-    this.eslintConfigPath = path.join(
-      process.cwd(),
-      `.eslintrc.${this.configExtension}`
-    );
   }
 
   private addToExtends(config: Record<string, any>, pluginExtend: string) {
@@ -60,10 +49,16 @@ class EslintConfigManager {
 
   // TODO: think of better way to pass packageManager
   public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
-    const config = await convertConfigToJson(
-      this.eslintConfigPath,
-      this.configExtension
+    const configExtension = getExistingFileExtension(
+      ".eslintrc",
+      ESLINT_CONFIG_EXTENSION,
+      process.cwd()
     );
+    const eslintConfigPath = path.join(
+      process.cwd(),
+      `.eslintrc.${configExtension}`
+    );
+    const config = await convertConfigToJson(eslintConfigPath, configExtension);
 
     const sortedPlugins = plugins.sort(
       (pluginA, pluginB) =>
@@ -92,8 +87,8 @@ class EslintConfigManager {
       }
     }
 
-    const configStr = convertJsonToConfig(config, this.configExtension);
-    fs.writeFileSync(this.eslintConfigPath, configStr);
+    const configStr = convertJsonToConfig(config, configExtension);
+    fs.writeFileSync(eslintConfigPath, configStr);
   }
 }
 
