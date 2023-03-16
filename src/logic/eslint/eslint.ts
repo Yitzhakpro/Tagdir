@@ -2,11 +2,15 @@ import {
   addScriptToPackageJson,
   copyTemplateFiles,
   isPackageInstalled,
+  isReactProject,
   Logger,
   runCommand,
 } from "../../utils";
+import { ImportPlugin, ReactHooksPlugin } from "./plugins";
 import type { HelperConfig } from "../../types";
 import type { BaseHelper } from "../base";
+import type EslintConfigManager from "./configManager";
+import type { EslintPlugin } from "./plugins";
 
 class Eslint implements BaseHelper {
   private static async initEslint(): Promise<void> {
@@ -27,13 +31,25 @@ class Eslint implements BaseHelper {
     }
   }
 
-  private static enhanceDefaultConfiguration() {
-    // TODO: implement
+  private static enhanceDefaultConfiguration(
+    eslintConfigManager: EslintConfigManager
+  ) {
+    const isReactProgram = isReactProject();
+    const addingPlugins: EslintPlugin[] = [];
+
+    if (isReactProgram) {
+      addingPlugins.push(new ReactHooksPlugin());
+    }
+    addingPlugins.push(new ImportPlugin(isReactProgram));
+
+    eslintConfigManager.addPlugins(...addingPlugins);
   }
 
-  private static createEslintConfigurations(): void {
+  private static createEslintConfigurations(
+    eslintConfigManager: EslintConfigManager
+  ): void {
     copyTemplateFiles("eslint", process.cwd());
-    Eslint.enhanceDefaultConfiguration();
+    Eslint.enhanceDefaultConfiguration(eslintConfigManager);
 
     Logger.success("Created default .eslintignore configuration file.");
     Logger.info(
@@ -51,10 +67,12 @@ class Eslint implements BaseHelper {
     );
   }
 
-  public async apply(_config: HelperConfig): Promise<void> {
+  public async apply(config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("eslint")) {
+      const { eslintConfigManager } = config;
+
       await Eslint.initEslint();
-      Eslint.createEslintConfigurations();
+      Eslint.createEslintConfigurations(eslintConfigManager);
       Eslint.addEslintScripts();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
