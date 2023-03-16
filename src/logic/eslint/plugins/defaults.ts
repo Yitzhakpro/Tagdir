@@ -1,6 +1,7 @@
 import { EslintPlugin } from "./base";
 import type { EslintRule, RuleSeverity } from "./types";
 
+// TODO: think about adding @typescript-eslint/parser and resolver
 export class ImportPlugin extends EslintPlugin {
   constructor(isReactProject = false) {
     const importRules: EslintRule = {
@@ -36,7 +37,7 @@ export class ImportPlugin extends EslintPlugin {
       importOrderRuleOptions[1].pathGroupsExcludedImportTypes = ["react"];
     }
 
-    super("eslint-plugin-import", importRules, "recommended");
+    super("eslint-plugin-import", importRules);
   }
 }
 
