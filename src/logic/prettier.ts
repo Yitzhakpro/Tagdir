@@ -5,6 +5,7 @@ import {
   getInstallCommand,
   isEslintInstalled,
   isPackageInstalled,
+  isReactProject,
   Logger,
   runCommand,
 } from "../utils";
@@ -43,11 +44,19 @@ class Prettier implements BaseHelper {
     }
   }
 
-  // TODO: add configuration according to project
   private static createPrettierConfigurations(): void {
-    copyTemplateFiles("eslint", process.cwd());
+    let prettierTemplateType = "";
+    if (isReactProject()) {
+      prettierTemplateType = "react";
+    } else {
+      prettierTemplateType = "normal";
+    }
 
-    Logger.success("Created default .prettierrc configuration file.");
+    copyTemplateFiles(`prettier/${prettierTemplateType}`, process.cwd());
+
+    Logger.success(
+      `Created default ${prettierTemplateType} .prettierrc configuration file.`
+    );
     Logger.info(
       "You can modify the config file according to your needs, for more info: https://prettier.io/docs/en/options.html"
     );

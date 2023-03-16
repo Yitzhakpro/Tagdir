@@ -120,6 +120,10 @@ export const getInstallAllDepsCommand = (
   }
 };
 
+export const isReactProject = (): boolean => {
+  return isPackageInstalled("react") && isPackageInstalled("react-dom");
+};
+
 // TODO: better error handling
 export const isEslintInstalled = (): boolean => {
   try {
