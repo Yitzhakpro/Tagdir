@@ -69,8 +69,8 @@ class Prettier implements BaseHelper {
   }
 
   private static addPrettierScripts(): void {
-    addScriptToPackageJson("prettier:check", "npx prettier src/* --check");
-    addScriptToPackageJson("prettier:fix", "npx prettier src/* --write");
+    addScriptToPackageJson("prettier:check", "npx prettier src/**/* --check");
+    addScriptToPackageJson("prettier:fix", "npx prettier src/**/* --write");
 
     Logger.success("Added default prettier scripts to package.json");
     Logger.info(

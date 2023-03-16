@@ -61,8 +61,8 @@ class Eslint implements BaseHelper {
   }
 
   private static addEslintScripts(): void {
-    addScriptToPackageJson("lint:check", "npx eslint src/*");
-    addScriptToPackageJson("lint:fix", "npx eslint src/* --fix");
+    addScriptToPackageJson("lint:check", "npx eslint src/**/*");
+    addScriptToPackageJson("lint:fix", "npx eslint src/**/* --fix");
 
     Logger.success("Added default eslint scripts to package.json");
     Logger.info(
