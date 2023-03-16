@@ -13,6 +13,9 @@ import type EslintConfigManager from "./configManager";
 import type { EslintPlugin } from "./plugins";
 
 class Eslint implements BaseHelper {
+  /*
+    TODO: try to think what to do when this error comes: https://github.com/eslint/create-config/issues/40
+  */
   private static async initEslint(): Promise<void> {
     try {
       Logger.info("Initializing eslint...");
@@ -31,9 +34,9 @@ class Eslint implements BaseHelper {
     }
   }
 
-  private static enhanceDefaultConfiguration(
+  private static async enhanceDefaultConfiguration(
     eslintConfigManager: EslintConfigManager
-  ) {
+  ): Promise<void> {
     const isReactProgram = isReactProject();
     const addingPlugins: EslintPlugin[] = [];
 
@@ -42,14 +45,14 @@ class Eslint implements BaseHelper {
     }
     addingPlugins.push(new ImportPlugin(isReactProgram));
 
-    eslintConfigManager.addPlugins(...addingPlugins);
+    await eslintConfigManager.addPlugins(...addingPlugins);
   }
 
-  private static createEslintConfigurations(
+  private static async createEslintConfigurations(
     eslintConfigManager: EslintConfigManager
-  ): void {
+  ): Promise<void> {
     copyTemplateFiles("eslint", process.cwd());
-    Eslint.enhanceDefaultConfiguration(eslintConfigManager);
+    await Eslint.enhanceDefaultConfiguration(eslintConfigManager);
 
     Logger.success("Created default .eslintignore configuration file.");
     Logger.info(
@@ -72,7 +75,7 @@ class Eslint implements BaseHelper {
       const { eslintConfigManager } = config;
 
       await Eslint.initEslint();
-      Eslint.createEslintConfigurations(eslintConfigManager);
+      await Eslint.createEslintConfigurations(eslintConfigManager);
       Eslint.addEslintScripts();
     } else {
       Logger.warn("Eslint is already installed, skipping.");
