@@ -1,110 +1,104 @@
 import {
-  addScriptToPackageJson,
-  copyTemplateFiles,
-  getConfirmation,
-  getInstallCommand,
-  isEslintInstalled,
-  isPackageInstalled,
-  isReactProject,
-  Logger,
-  runCommand,
-} from "../utils";
-import { PrettierPlugin } from "./eslint/plugins";
-import type { HelperConfig, PackageManager } from "../types";
-import type { BaseHelper } from "./base";
-import type { EslintConfigManager } from "./eslint";
+	addScriptToPackageJson,
+	copyTemplateFiles,
+	getConfirmation,
+	getInstallCommand,
+	isEslintInstalled,
+	isPackageInstalled,
+	isReactProject,
+	Logger,
+	runCommand,
+} from '../utils';
+import { PrettierPlugin } from './eslint/plugins';
+import type { BaseHelper } from './base';
+import type { EslintConfigManager } from './eslint';
+import type { HelperConfig, PackageManager } from '../types';
 
 class Prettier implements BaseHelper {
-  private static async installPrettier(
-    packageManager: PackageManager
-  ): Promise<void> {
-    try {
-      const prettierInstallCommand = getInstallCommand(
-        packageManager,
-        "prettier",
-        true
-      );
-      const shouldAutoInstall = await getConfirmation(
-        "auto-install-prettier",
-        "Do you want the CLI to install it for you?"
-      );
-      if (shouldAutoInstall) {
-        Logger.info("Installing prettier...");
-        await runCommand(prettierInstallCommand);
-        Logger.success("Installed prettier successfully!");
-      } else {
-        Logger.info(
-          `Here is the command for manual installation: ${prettierInstallCommand}`
-        );
-      }
-    } catch (error) {
-      Logger.error("Failed to install prettier");
-      console.error(error);
-      process.exit(1);
-    }
-  }
+	private static async installPrettier(packageManager: PackageManager): Promise<void> {
+		try {
+			Logger.info('Initializing prettier...');
 
-  private static createPrettierConfigurations(): void {
-    let prettierTemplateType = "";
-    if (isReactProject()) {
-      prettierTemplateType = "react";
-    } else {
-      prettierTemplateType = "normal";
-    }
+			const prettierInstallCommand = getInstallCommand(packageManager, 'prettier', true);
+			const shouldAutoInstall = await getConfirmation(
+				'auto-install-prettier',
+				'Do you want the CLI to install prettier for you?'
+			);
+			if (shouldAutoInstall) {
+				Logger.info('Installing prettier...');
+				await runCommand(prettierInstallCommand);
+				Logger.success('Installed prettier successfully!');
+			} else {
+				Logger.info(
+					`Here is the command for manual installation: ${prettierInstallCommand}`
+				);
+			}
+		} catch (error) {
+			Logger.error('Failed to install prettier');
+			console.error(error);
+			process.exit(1);
+		}
+	}
 
-    copyTemplateFiles(`prettier/${prettierTemplateType}`, process.cwd());
+	private static createPrettierConfigurations(): void {
+		let prettierTemplateType = '';
+		if (isReactProject()) {
+			prettierTemplateType = 'react';
+		} else {
+			prettierTemplateType = 'normal';
+		}
 
-    Logger.success(
-      `Created default ${prettierTemplateType} .prettierrc configuration file.`
-    );
-    Logger.info(
-      "You can modify the config file according to your needs, for more info: https://prettier.io/docs/en/options.html"
-    );
-    Logger.success("Created default .prettierignore configuration file.");
-    Logger.info(
-      "You can modify the ignore file according to your needs, for more info: https://prettier.io/docs/en/ignore.html"
-    );
-  }
+		copyTemplateFiles(`prettier/${prettierTemplateType}`, process.cwd());
 
-  private static addPrettierScripts(): void {
-    addScriptToPackageJson("prettier:check", "npx prettier src/* --check");
-    addScriptToPackageJson("prettier:fix", "npx prettier src/* --write");
+		Logger.success(`Created default ${prettierTemplateType} .prettierrc configuration file.`);
+		Logger.info(
+			'You can modify the config file according to your needs, for more info: https://prettier.io/docs/en/options.html'
+		);
+		Logger.success('Created default .prettierignore configuration file.');
+		Logger.info(
+			'You can modify the ignore file according to your needs, for more info: https://prettier.io/docs/en/ignore.html'
+		);
+	}
 
-    Logger.success("Added default prettier scripts to package.json");
-    Logger.info(
-      "You can modify the scripts according to your needs, for more info: https://prettier.io/docs/en/cli.html"
-    );
-  }
+	private static addPrettierScripts(): void {
+		addScriptToPackageJson('prettier:check', 'npx prettier src/**/* --check');
+		addScriptToPackageJson('prettier:fix', 'npx prettier src/**/* --write');
 
-  private static async addPrettierEslintPlugin(
-    eslintConfigManager: EslintConfigManager
-  ): Promise<void> {
-    try {
-      Logger.info("Installing prettier eslint plugin...");
-      await eslintConfigManager.addPlugins(new PrettierPlugin());
-      Logger.success("Successfully installed prettier eslint plugin!");
-    } catch (error) {
-      Logger.error("Failed to install prettier eslint plugin");
-      console.error(error);
-      process.exit(1);
-    }
-  }
+		Logger.success('Added default prettier scripts to package.json');
+		Logger.info(
+			'You can modify the scripts according to your needs, for more info: https://prettier.io/docs/en/cli.html'
+		);
+	}
 
-  public async apply(config: HelperConfig): Promise<void> {
-    if (!isPackageInstalled("prettier")) {
-      const { packageManager, eslintConfigManager } = config;
+	private static async addPrettierEslintPlugin(
+		eslintConfigManager: EslintConfigManager
+	): Promise<void> {
+		try {
+			Logger.info('Installing prettier eslint plugin...');
+			await eslintConfigManager.addPlugins(new PrettierPlugin());
+			Logger.success('Successfully installed prettier eslint plugin!');
+		} catch (error) {
+			Logger.error('Failed to install prettier eslint plugin');
+			console.error(error);
+			process.exit(1);
+		}
+	}
 
-      await Prettier.installPrettier(packageManager);
-      Prettier.createPrettierConfigurations();
-      Prettier.addPrettierScripts();
+	public async apply(config: HelperConfig): Promise<void> {
+		if (!isPackageInstalled('prettier')) {
+			const { packageManager, eslintConfigManager } = config;
 
-      if (isEslintInstalled()) {
-        await Prettier.addPrettierEslintPlugin(eslintConfigManager);
-      }
-    } else {
-      Logger.warn("Prettier is already installed, skipping.");
-    }
-  }
+			await Prettier.installPrettier(packageManager);
+			Prettier.createPrettierConfigurations();
+			Prettier.addPrettierScripts();
+
+			if (isEslintInstalled()) {
+				await Prettier.addPrettierEslintPlugin(eslintConfigManager);
+			}
+		} else {
+			Logger.warn('Prettier is already installed, skipping.');
+		}
+	}
 }
 
 export default Prettier;

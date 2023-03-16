@@ -1,9 +1,9 @@
-import type { EslintConfigManager } from "../logic";
-import type { PackageManager } from "./enviroment.types";
+import type { PackageManager } from './enviroment.types';
+import type { EslintConfigManager } from '../logic';
 
 export interface HelperConfig {
-  packageManager: PackageManager;
-  eslintConfigManager: EslintConfigManager;
+	packageManager: PackageManager;
+	eslintConfigManager: EslintConfigManager;
 }
 
-export type ConfigExtensions = "js" | "cjs" | "yaml" | "yml" | "json";
+export type ConfigExtensions = 'js' | 'cjs' | 'yaml' | 'yml' | 'json';
