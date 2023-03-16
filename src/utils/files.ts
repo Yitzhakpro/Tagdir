@@ -41,8 +41,11 @@ export const copyTemplateFiles = (
   const templateFiles = fs.readdirSync(templateFolderLocation);
 
   templateFiles.forEach((fileName) => {
+    const finalFileName = fileName.startsWith("_")
+      ? fileName.slice(1)
+      : fileName;
     const fullTemplateFilePath = path.join(templateFolderLocation, fileName);
-    const destinationTemplatePath = path.join(destination, fileName);
+    const destinationTemplatePath = path.join(destination, finalFileName);
 
     fs.copyFileSync(fullTemplateFilePath, destinationTemplatePath);
   });
