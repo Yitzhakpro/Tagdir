@@ -19,6 +19,8 @@ class Prettier implements BaseHelper {
     packageManager: PackageManager
   ): Promise<void> {
     try {
+      Logger.info("Initializing prettier...");
+
       const prettierInstallCommand = getInstallCommand(
         packageManager,
         "prettier",
@@ -26,7 +28,7 @@ class Prettier implements BaseHelper {
       );
       const shouldAutoInstall = await getConfirmation(
         "auto-install-prettier",
-        "Do you want the CLI to install it for you?"
+        "Do you want the CLI to install prettier for you?"
       );
       if (shouldAutoInstall) {
         Logger.info("Installing prettier...");

@@ -29,7 +29,7 @@ class Husky implements BaseHelper {
       const huskyInstallCommand = getInstallAllDepsCommand(packageManager);
       const shouldAutoInstall = await getConfirmation(
         "auto-install-husky",
-        "Do you want the CLI to install it for you?"
+        "Do you want the CLI to install husky for you?"
       );
       if (shouldAutoInstall) {
         Logger.info("Installing lint-staged...");
@@ -58,7 +58,7 @@ class Husky implements BaseHelper {
       );
       const shouldAutoInstall = await getConfirmation(
         "auto-install-lint-staged",
-        "Do you want the CLI to install it for you?"
+        "Do you want the CLI to install lint-staged for you?"
       );
       if (shouldAutoInstall) {
         Logger.info("Installing lint-staged...");
