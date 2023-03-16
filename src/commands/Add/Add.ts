@@ -1,5 +1,5 @@
 import { Command, Argument } from "commander";
-import { CONFIGURATIONS_ORDER } from "../../helpers";
+import { CONFIGURATIONS_ORDER, EslintConfigManager } from "../../logic";
 import { getPackageManagerName } from "../../utils";
 import { CONFIGURATIONS } from "./constants";
 import type { Configuration, HelperConfig } from "../../types";
@@ -27,13 +27,14 @@ class Add {
 
   private async handler(configurations: Configuration[]): Promise<void> {
     const packageManager = await getPackageManagerName();
-    const helperConfig: HelperConfig = { packageManager };
+    const eslintConfigManager = new EslintConfigManager(packageManager);
+    const helperConfig: HelperConfig = { packageManager, eslintConfigManager };
 
-    CONFIGURATIONS_ORDER.forEach(async (configOrder) => {
+    for (const configOrder of CONFIGURATIONS_ORDER) {
       if (configurations.includes(configOrder.name)) {
         await configOrder.apply(helperConfig);
       }
-    });
+    }
   }
 }
 

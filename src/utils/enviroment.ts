@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { readNthLine } from "./files";
+import { ESLINT_CONFIG_EXTENSION } from "../constants";
+import { getExistingFileExtension, readNthLine } from "./files";
 import type { PackageManager } from "../types";
 
 export const getPackageManagerName = async (): Promise<PackageManager> => {
@@ -116,5 +117,21 @@ export const getInstallAllDepsCommand = (
     return "yarn";
   } else {
     return "pnpm i";
+  }
+};
+
+// TODO: better error handling
+export const isEslintInstalled = (): boolean => {
+  try {
+    const eslintFile = getExistingFileExtension(
+      ".eslintrc",
+      ESLINT_CONFIG_EXTENSION,
+      process.cwd()
+    );
+    const isEslintInstalled = isPackageInstalled("eslint");
+
+    return isEslintInstalled && Boolean(eslintFile);
+  } catch (err) {
+    return false;
   }
 };

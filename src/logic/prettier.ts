@@ -3,12 +3,15 @@ import {
   copyTemplateFiles,
   getConfirmation,
   getInstallCommand,
+  isEslintInstalled,
   isPackageInstalled,
   Logger,
   runCommand,
 } from "../utils";
+import { PrettierPlugin } from "./eslint/plugins";
 import type { HelperConfig, PackageManager } from "../types";
 import type { BaseHelper } from "./base";
+import type { EslintConfigManager } from "./eslint";
 
 class Prettier implements BaseHelper {
   private static async installPrettier(
@@ -64,13 +67,31 @@ class Prettier implements BaseHelper {
     );
   }
 
+  private static async addPrettierEslintPlugin(
+    eslintConfigManager: EslintConfigManager
+  ): Promise<void> {
+    try {
+      Logger.info("Installing prettier eslint plugin...");
+      await eslintConfigManager.addPlugins(new PrettierPlugin());
+      Logger.success("Successfully installed prettier eslint plugin!");
+    } catch (error) {
+      Logger.error("Failed to install prettier eslint plugin");
+      console.error(error);
+      process.exit(1);
+    }
+  }
+
   public async apply(config: HelperConfig): Promise<void> {
     if (!isPackageInstalled("prettier")) {
-      const { packageManager } = config;
+      const { packageManager, eslintConfigManager } = config;
 
       await Prettier.installPrettier(packageManager);
       Prettier.createPrettierConfigurations();
       Prettier.addPrettierScripts();
+
+      if (isEslintInstalled()) {
+        await Prettier.addPrettierEslintPlugin(eslintConfigManager);
+      }
     } else {
       Logger.warn("Prettier is already installed, skipping.");
     }
