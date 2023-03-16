@@ -1,3 +1,3 @@
-import EslintConfigManager from "./configManager";
+import EslintConfigManager from './configManager';
 
 export default EslintConfigManager;

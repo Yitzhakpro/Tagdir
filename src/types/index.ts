@@ -1,3 +1,3 @@
-export * from "./config.types";
-export * from "./enviroment.types";
-export * from "./general.types";
+export * from './config.types';
+export * from './enviroment.types';
+export * from './general.types';
