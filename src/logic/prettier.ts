@@ -54,7 +54,9 @@ class Prettier implements BaseHelper {
 
     copyTemplateFiles(`prettier/${prettierTemplateType}`, process.cwd());
 
-    Logger.success("Created default .prettierrc configuration file.");
+    Logger.success(
+      `Created default ${prettierTemplateType} .prettierrc configuration file.`
+    );
     Logger.info(
       "You can modify the config file according to your needs, for more info: https://prettier.io/docs/en/options.html"
     );
