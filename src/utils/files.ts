@@ -37,6 +37,25 @@ export const copyTemplateFiles = (templateType: string, destination: string): vo
 	});
 };
 
+export const copySpecificTemplateFile = (
+	templatePath: string,
+	fileName: string,
+	destination: string,
+	destinationFileName: string
+): void => {
+	const templateFolderLocation = path.join(
+		__dirname,
+		'..',
+		'..',
+		'templates',
+		templatePath,
+		fileName
+	);
+	const destinationTemplatePath = path.join(destination, destinationFileName);
+
+	fs.copyFileSync(templateFolderLocation, destinationTemplatePath);
+};
+
 export const getExistingFileExtension = <T>(
 	filename: string,
 	extensions: T[],
