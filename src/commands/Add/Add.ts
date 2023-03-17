@@ -2,7 +2,7 @@ import { Command, Argument } from 'commander';
 import { CONFIGURATIONS_ORDER, EslintConfigManager } from '../../logic';
 import { getPackageManagerName } from '../../utils';
 import { CONFIGURATIONS } from './constants';
-import type { Configuration, HelperConfig } from '../../types';
+import type { Configuration, LogicConfig } from '../../types';
 
 class Add {
 	public command: Command;
@@ -28,11 +28,13 @@ class Add {
 	private async handler(configurations: Configuration[]): Promise<void> {
 		const packageManager = await getPackageManagerName();
 		const eslintConfigManager = new EslintConfigManager(packageManager);
-		const helperConfig: HelperConfig = { packageManager, eslintConfigManager };
+		const helperConfig: LogicConfig = { packageManager, eslintConfigManager };
 
 		for (const configOrder of CONFIGURATIONS_ORDER) {
 			if (configurations.includes(configOrder.name)) {
 				await configOrder.apply(helperConfig);
+
+				console.log('');
 			}
 		}
 	}

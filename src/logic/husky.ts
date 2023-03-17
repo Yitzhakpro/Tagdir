@@ -10,10 +10,10 @@ import {
 	getPackageRunnerCommand,
 	runCommand,
 } from '../utils';
-import type { BaseHelper } from './base';
-import type { HelperConfig, PackageManager } from '../types';
+import type { BaseLogic } from './base';
+import type { LogicConfig, PackageManager } from '../types';
 
-class Husky implements BaseHelper {
+class Husky implements BaseLogic {
 	private static async installHusky(packageManager: PackageManager): Promise<void> {
 		try {
 			Logger.info('Initializing husky...');
@@ -85,7 +85,7 @@ class Husky implements BaseHelper {
 		);
 	}
 
-	public async apply(config: HelperConfig): Promise<void> {
+	public async apply(config: LogicConfig): Promise<void> {
 		const { packageManager } = config;
 
 		if (!isPackageInstalled('husky')) {

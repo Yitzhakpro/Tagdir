@@ -10,11 +10,11 @@ import {
 	runCommand,
 } from '../utils';
 import { PrettierPlugin } from './eslint/plugins';
-import type { BaseHelper } from './base';
+import type { BaseLogic } from './base';
 import type { EslintConfigManager } from './eslint';
-import type { HelperConfig, PackageManager } from '../types';
+import type { LogicConfig, PackageManager } from '../types';
 
-class Prettier implements BaseHelper {
+class Prettier implements BaseLogic {
 	private static async installPrettier(packageManager: PackageManager): Promise<void> {
 		try {
 			Logger.info('Initializing prettier...');
@@ -84,7 +84,7 @@ class Prettier implements BaseHelper {
 		}
 	}
 
-	public async apply(config: HelperConfig): Promise<void> {
+	public async apply(config: LogicConfig): Promise<void> {
 		if (!isPackageInstalled('prettier')) {
 			const { packageManager, eslintConfigManager } = config;
 
