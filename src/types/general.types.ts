@@ -1,1 +1,1 @@
-export type Configuration = 'husky' | 'eslint' | 'prettier';
+export type Configuration = 'husky' | 'eslint' | 'prettier' | 'license';
