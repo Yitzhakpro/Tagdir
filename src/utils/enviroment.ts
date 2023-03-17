@@ -4,6 +4,13 @@ import { ESLINT_CONFIG_EXTENSION } from '../constants';
 import { getExistingFileExtension, readNthLine } from './files';
 import type { PackageManager } from '../types';
 
+export const hasInitializedGitRepo = (rootPath = process.cwd()): boolean => {
+	const dotGitPath = path.join(rootPath, '.git');
+	const dotGitFolderExists = fs.existsSync(dotGitPath);
+
+	return dotGitFolderExists;
+};
+
 export const getPackageManagerName = async (): Promise<PackageManager> => {
 	const yarnLockFilePath = path.join(process.cwd(), 'yarn.lock');
 	const pnpmLockFilePath = path.join(process.cwd(), 'pnpm-lock.yaml');

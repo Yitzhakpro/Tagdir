@@ -9,6 +9,7 @@ import {
 	getConfirmation,
 	getPackageRunnerCommand,
 	runCommand,
+	hasInitializedGitRepo,
 } from '../utils';
 import type { BaseLogic } from './base';
 import type { LogicConfig, PackageManager } from '../types';
@@ -86,6 +87,13 @@ class Husky implements BaseLogic {
 	}
 
 	public async apply(config: LogicConfig): Promise<void> {
+		if (!hasInitializedGitRepo()) {
+			Logger.error(
+				'The project has not initialized a git repository, initalize a repo with "git init"'
+			);
+			process.exit(1);
+		}
+
 		const { packageManager } = config;
 
 		if (!isPackageInstalled('husky')) {
