@@ -1,4 +1,4 @@
-import { copySpecificTemplateFile, getPromptSelection } from '../../utils';
+import { copySpecificTemplateFile, getPromptSelection, Logger } from '../../utils';
 import type { LicenseName } from './types';
 import type { LogicConfig } from '../../types';
 import type { BaseLogic } from '../base';
@@ -23,12 +23,19 @@ class License implements BaseLogic {
 	}
 
 	private static createLicenseFile(licenseFileName: string): void {
+		Logger.info('Creating LICENSE file...');
+
 		copySpecificTemplateFile('licenses', licenseFileName, process.cwd(), 'LICENSE');
+
+		Logger.success('Created the LICENSE file successfully!');
+		Logger.info(
+			'Make sure that you add the necessary things according to the LICENSE, for more info visit: https://choosealicense.com/licenses/'
+		);
 	}
 
 	public async apply(_config: LogicConfig): Promise<void> {
-		const selectedLicense = await License.getSelectedLicense();
-		License.createLicenseFile(selectedLicense);
+		const selectedLicenseFileName = await License.getSelectedLicense();
+		License.createLicenseFile(selectedLicenseFileName);
 	}
 }
 
