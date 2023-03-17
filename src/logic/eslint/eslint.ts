@@ -9,10 +9,10 @@ import {
 import { ImportPlugin, ReactHooksPlugin } from './plugins';
 import type EslintConfigManager from './configManager';
 import type { EslintPlugin } from './plugins';
-import type { HelperConfig } from '../../types';
-import type { BaseHelper } from '../base';
+import type { LogicConfig } from '../../types';
+import type { BaseLogic } from '../base';
 
-class Eslint implements BaseHelper {
+class Eslint implements BaseLogic {
 	/*
     TODO: try to think what to do when this error comes: https://github.com/eslint/create-config/issues/40
   */
@@ -70,7 +70,7 @@ class Eslint implements BaseHelper {
 		);
 	}
 
-	public async apply(config: HelperConfig): Promise<void> {
+	public async apply(config: LogicConfig): Promise<void> {
 		if (!isPackageInstalled('eslint')) {
 			const { eslintConfigManager } = config;
 

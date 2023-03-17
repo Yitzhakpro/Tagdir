@@ -1,7 +1,7 @@
-import type { HelperConfig } from '../types';
+import type { LogicConfig } from '../types';
 
-export type ApplyFunction = (config: HelperConfig) => Promise<void>;
+export type ApplyFunction = (config: LogicConfig) => Promise<void>;
 
-export interface BaseHelper {
+export interface BaseLogic {
 	apply: ApplyFunction;
 }
