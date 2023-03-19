@@ -1,3 +1,3 @@
 import type { Configuration } from '../../types';
 
-export const CONFIGURATIONS: Configuration[] = ['husky', 'eslint', 'prettier'];
+export const CONFIGURATIONS: Configuration[] = ['husky', 'eslint', 'prettier', 'license'];
