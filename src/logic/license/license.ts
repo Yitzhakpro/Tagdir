@@ -20,6 +20,11 @@ class License implements BaseLogic {
 			MIT: 'mitLicense',
 			'Apache v2': 'apacheV2License',
 			'GNU GPLv3': 'gplV3License',
+			'GNU AGPLv3': 'agplV3License',
+			'GNU LGPLv3': 'lgplV3License',
+			'Mozilla Public v2': 'mozillaPublicV2License',
+			'Boost Software v1': 'boostSoftwareV1',
+			'The Unlicense': 'theUnlicenseLicense',
 		};
 
 		Logger.info('Creating LICENSE file...');
