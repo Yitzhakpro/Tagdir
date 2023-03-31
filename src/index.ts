@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import Program from './Program';
+import ConfigMaster from './configMaster';
 
-const program = new Program();
-program.parse(process.argv);
+const configMaster = new ConfigMaster();
+configMaster.parse(process.argv);
