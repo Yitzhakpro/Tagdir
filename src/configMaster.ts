@@ -1,12 +1,12 @@
 import { Command } from 'commander';
 import { Add } from './commands';
 
-export default class Program {
+export default class ConfigMaster {
 	private readonly program: Command;
 
 	constructor() {
 		const program = new Command()
-			.name('Enhancer')
+			.name('ConfigMaster')
 			.description('CLI to add configurations to project')
 			.addCommand(Add.command);
 

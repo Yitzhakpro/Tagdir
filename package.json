@@ -1,12 +1,12 @@
 {
-  "name": "enhancer",
+  "name": "configmaster",
   "version": "0.0.1",
   "description": "",
   "author": "Yitzhakpro",
   "license": "MIT",
   "main": "dist/index.js",
   "bin": {
-    "yproject-enhancer": "./dist/index.js"
+    "configmaster": "./dist/index.js"
   },
   "files": [
     "dist",
