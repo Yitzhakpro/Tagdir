@@ -8,11 +8,11 @@ import {
 	isReactProject,
 	Logger,
 	runCommand,
-} from '../utils';
-import { PrettierPlugin } from './eslint/plugins';
-import type { BaseLogic } from './base';
-import type { EslintConfigManager } from './eslint';
-import type { LogicConfig, PackageManager } from '../types';
+} from '../../utils';
+import { PrettierPlugin } from '../eslint/plugins';
+import type { LogicConfig, PackageManager } from '../../types';
+import type { BaseLogic } from '../base';
+import type { EslintConfigManager } from '../eslint';
 
 class Prettier implements BaseLogic {
 	private static async installPrettier(packageManager: PackageManager): Promise<void> {
