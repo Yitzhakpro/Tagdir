@@ -44,6 +44,28 @@ class EslintConfigManager {
 		config.rules = { ...config.rules, ...pluginRules };
 	}
 
+	private static sortEslintConfig(config: Record<string, any>): Record<string, any> {
+		const orderedKeys = [
+			'root', // needs to be at the beginning
+			'extends',
+			'ignore',
+			'env',
+			'globals',
+			'parserOptions',
+			'plugins',
+			'rules',
+			'overrides',
+		];
+		const sortedConfig: Record<string, any> = {};
+		Object.keys(config)
+			.sort((a, b) => orderedKeys.indexOf(a) - orderedKeys.indexOf(b))
+			.forEach((key) => {
+				sortedConfig[key] = config[key];
+			});
+
+		return sortedConfig;
+	}
+
 	public async addPlugins(...plugins: EslintPlugin[]): Promise<void> {
 		const configExtension = getExistingFileExtension(
 			'.eslintrc',
@@ -80,7 +102,8 @@ class EslintConfigManager {
 			}
 		}
 
-		const configStr = convertJsonToConfig(config, configExtension);
+		const sortedConfig = EslintConfigManager.sortEslintConfig(config);
+		const configStr = convertJsonToConfig(sortedConfig, configExtension);
 		fs.writeFileSync(eslintConfigPath, configStr);
 	}
 }
