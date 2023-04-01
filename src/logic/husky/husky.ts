@@ -10,9 +10,9 @@ import {
 	getPackageRunnerCommand,
 	runCommand,
 	hasInitializedGitRepo,
-} from '../utils';
-import type { BaseLogic } from './base';
-import type { LogicConfig, PackageManager } from '../types';
+} from '../../utils';
+import type { LogicConfig, PackageManager } from '../../types';
+import type { BaseLogic } from '../base';
 
 class Husky implements BaseLogic {
 	private static async installHusky(packageManager: PackageManager): Promise<void> {
