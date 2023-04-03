@@ -1,7 +1,9 @@
 {
   "name": "configmaster",
   "version": "0.0.1",
-  "description": "",
+  "description": "CLI to add configurations to projects",
+  "keywords": ["CLI", "configuration", "config", "lint"],
+  "homepage": "https://github.com/Yitzhakpro/ConfigMaster",
   "author": "Yitzhakpro",
   "license": "MIT",
   "main": "dist/index.js",
@@ -18,7 +20,8 @@
     "lint:fix": "npx eslint src/**/* --fix",
     "prettier:check": "npx prettier src/**/* --check",
     "prettier:fix": "npx prettier src/**/* --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
