@@ -1,0 +1,9 @@
+# deps
+node_modules/
+
+# artifacts
+dist/
+build/
+
+# generated
+coverage/
