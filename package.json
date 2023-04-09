@@ -1,14 +1,14 @@
 {
-  "name": "confinger",
+  "name": "tagdir",
   "version": "0.0.1",
   "description": "CLI to add configurations to projects",
   "keywords": ["CLI", "configuration", "config", "lint"],
-  "homepage": "https://github.com/Yitzhakpro/Confinger",
+  "homepage": "https://github.com/Yitzhakpro/Tagdir",
   "author": "Yitzhakpro",
   "license": "MIT",
   "main": "dist/index.js",
   "bin": {
-    "confinger": "./dist/index.js"
+    "tagdir": "./dist/index.js"
   },
   "files": [
     "dist",

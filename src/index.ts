@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import Confinger from './confinger';
+import Tagdir from './tagdir';
 
-const configMaster = new Confinger();
+const configMaster = new Tagdir();
 configMaster.parse(process.argv);
