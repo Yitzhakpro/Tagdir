@@ -1,8 +1,13 @@
 {
   "name": "tagdir",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CLI to add configurations to projects",
-  "keywords": ["CLI", "configuration", "config", "lint"],
+  "keywords": [
+    "CLI",
+    "configuration",
+    "config",
+    "lint"
+  ],
   "homepage": "https://github.com/Yitzhakpro/Tagdir",
   "author": "Yitzhakpro",
   "license": "MIT",
