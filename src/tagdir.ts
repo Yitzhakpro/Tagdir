@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { Add } from './commands';
 
-export default class Confinger {
+export default class Tagdir {
 	private readonly program: Command;
 
 	constructor() {
