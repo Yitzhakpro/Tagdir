@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import ConfigMaster from './configMaster';
+import Confinger from './confinger';
 
-const configMaster = new ConfigMaster();
+const configMaster = new Confinger();
 configMaster.parse(process.argv);

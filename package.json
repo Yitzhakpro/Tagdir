@@ -1,14 +1,14 @@
 {
-  "name": "configmaster",
+  "name": "confinger",
   "version": "0.0.1",
   "description": "CLI to add configurations to projects",
   "keywords": ["CLI", "configuration", "config", "lint"],
-  "homepage": "https://github.com/Yitzhakpro/ConfigMaster",
+  "homepage": "https://github.com/Yitzhakpro/Confinger",
   "author": "Yitzhakpro",
   "license": "MIT",
   "main": "dist/index.js",
   "bin": {
-    "configmaster": "./dist/index.js"
+    "confinger": "./dist/index.js"
   },
   "files": [
     "dist",
