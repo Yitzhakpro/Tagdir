@@ -6,7 +6,7 @@ export default class Tagdir {
 
 	constructor() {
 		const program = new Command()
-			.name('Confinger')
+			.name('Tagdir')
 			.description('CLI to add configurations to project')
 			.addCommand(Add.command);
 
